@@ -1,0 +1,468 @@
+Præprocessering – Frasortering og Oprensning (Data Preprocessing)
+Dette er en detaljeret oversigt over slides fra Lektion 4 om dataforbehandling og filtrering præsenteret af Associate Professor Jesper Rindom Jensen.
+Hovedtemaer og Nøgleelementer
+Hvorfor Præprocessering?
+	• Datakvalitet har afgørende indflydelse på AI-modellers nøjagtighed
+	• Typiske udfordringer med datasæt: stort volumen, irrelevans og redundans
+	• Formål med filtrering: at fokusere på relevante data og reducere støj
+Frasortering (Data Selection)
+	1. Data(ir)relevans: 
+		○ Eksempler: fejldetektion i motorer med forskellige sensorer og kundelånevurdering
+		○ Kritisk spørgsmål: Er alle indsamlede datapunkter relevante for opgaven?
+	2. Metoder til frasortering: 
+		○ Manuel filtrering: 
+			§ Fordele: Simpel, udnytter ekspertise, hurtig metode
+			§ Ulemper: Kan overse skjulte sammenhænge, risiko for redundans, vanskelig ved store datamængder
+		○ Tærskelbaseret filtrering: 
+			§ Udvælger data baseret på definerede grænseværdier
+			§ Simpel og gennemsigtig men afhængig af valg af tærskelværdi
+		○ Statistisk/ML-baseret filtrering: 
+			§ Bruger metrikker som gensidig information, korrelation og feature-vigtighed
+			§ Datadrevet og objektiv, men beregningsmæssigt krævende
+		○ Outlierdetektion: 
+			§ Identificerer anomalier via statistiske metoder som Z-score
+			§ Effektiv til fjernelse af unormale datapunkter, men risiko for at fjerne brugbare data
+Oprensning (Data Cleaning)
+	1. Støjtyper: 
+		○ Impulsiv støj (salt/pepper): Udbredt i signalbehandling, ofte fra sensorfejl
+		○ Gaussisk støj: Modelleres som normalfordelte samples, typisk i sensorer og elektronik
+		○ Additiv støj: Særligt relevant i lydsignaler hvor flere signaler blandes
+	2. Støjreduktion gennem filtrering: 
+		○ Tidsdomæne-filtrering: 
+			§ Moving average filter: Udglatter ved beregning af løbende gennemsnit
+			§ Median filter: Sorterer værdier og vælger median, effektivt mod impulsiv støj
+		○ Frekvensdomæne-filtrering: 
+			§ Anvender Fourier-transformation for at arbejde i frekvensdomænet
+			§ Kan specifikt målrette støj med bestemte frekvenskarakteristika
+		○ FIR vs. IIR filtre: 
+			§ FIR (Finite Impulse Response): Lineær fase, stabilt, men kan være beregningstungt
+			§ IIR (Infinite Impulse Response): Rekursiv feedback, effektivt design men potentielt ustabilt
+		○ Optimale filtre: 
+			§ Wiener-filter: Minimerer middelkvadreret fejl (MSE)
+			§ Kræver forhåndsviden om signalet eller støjen
+	3. 2D-filtrering (til billeder): 
+		○ Foldning i 2D med forskellige masker (middelværdi, median)
+		○ Anvendes ofte til billedbehandling og støjreduktion i billeddata
+Praktiske Aspekter
+	• Python-implementering med biblioteker som NumPy, SciPy.signal, og SciPy.fft
+	• Eksempler på kode til forskellige filtreringsmetoder
+	• Vurdering af fordele og ulemper ved forskellige metoder afhængigt af datakontekst
+Opgaver
+To praktiske øvelser der anvender de gennemgåede teknikker:
+	1. Arbejde med outlierdetektion og feature-selektion
+	2. Implementere lavpas- og højpasfiltrering af 1D-tidsseriersignaler
+Dette undervisningsmateriale giver et grundigt overblik over de forskellige metoder til dataforbehandling og filtrering, som er afgørende for at opnå høj kvalitet i input til machine learning-modeller.
+
+
+Lektion 4: Præprocessering - frasortering og oprensning
+Agenda
+Denne forelæsning dækker tre hovedområder inden for databehandling:
+	1. Hvorfor præprocessering er vigtig
+	2. Filtrering til frasortering af irrelevante data
+	3. Filtrering til oprensning af støj i data
+	4. Praktiske opgaver
+Hvorfor filtrere?
+Datakvalitet har en kraftig indvirkning på AI-modellers nøjagtighed. Der er typisk tre udfordringer med datasæt:
+	1. Volumen - for store mængder data kan være svære at håndtere
+	2. Irrelevans - ikke alle data er relevante for den specifikke opgave
+	3. Redundans - overlappende information kan skabe forstyrrelse
+Filtrering anvendes til to formål:
+	• At fokusere på relevant data
+	• At reducere støj
+Visualiseringen på sliden viser, hvordan støjfyldte data skaber overlap mellem klasser, hvilket gør klassifikation vanskeligere.
+Frasortering
+Data(ir)relevans - Eksempel 1
+I fejldetektion af roterende maskiner (motorer) indsamles mange typer data:
+	• Vibration (IMU)
+	• Drejningsmoment (torque)
+	• Overfladetemperatur
+	• Lysforhold
+	• Personelregistrering
+	• Vejrdata
+	• Klokkeslæt
+Men er alle disse data relevante for fejldetektion? Nej, nogle parametre som lysforhold, personelregistrering og vejrdata er sandsynligvis ikke direkte relateret til motorens tilstand og kan filtreres fra.
+Data(ir)relevans - Eksempel 2
+Ved forudsigelse af kunders evne til at tilbagebetale lån kan disse data indsamles:
+	• Forhold mellem gæld og indkomst
+	• Betalingshistorik
+	• Lånebeløb og -rate
+	• Ansættelsesforhold
+	• Økonomiske indikatorer
+	• SoMe aktivitet
+	• Personlige interesser
+Her er finansielle data (gæld/indkomst, betalingshistorik) sandsynligvis relevante, mens personlige interesser måske ikke har stærk sammenhæng med tilbagebetalingsevne.
+Manuel filtrering
+Anvendelse af domæneekspertise til dataudvælgelse
+Fordele:
+	• Simpel procedure ved begrænsede datamængder
+	• Udnyttelse af ekspertise
+	• Hurtig fremgangsmåde
+Ulemper:
+	• Kan overse nye/skjulte sammenhænge
+	• Risiko for redundans
+	• Vanskeligt ved store datamængder og komplekse problemer
+Tærskelbaseret filtrering
+Vælger datapunkter baseret på en bestemt tærskel (T):
+y[n] = {
+    x[n],       hvis x[n] ≥ T
+    0 (eller fjern), ellers
+}
+
+Fordele: Simpel og transparent metode Ulemper: Afhænger stærkt af den valgte tærskelværdi
+Praktisk eksempel: Filtrering af accelerometerdata så kun segmenter med aktivitet (acceleration over tærskel) bevares.
+Statistisk/ML-baseret filtrering
+Anvender statistiske mål eller maskinlæringsmetoder til at vurdere datarelevans.
+Typiske metrikker:
+	• Gensidig information (mutual information)
+	• Korrelation
+	• Feature importance (fx fra træede modeller)
+Fordele:
+	• Datadrevet og mindre subjektiv
+	• Kan fange komplekse sammenhænge
+Ulemper:
+	• Beregningsmæssigt mere krævende
+	• Kan kræve tuning af parametre
+Gensidig information (Mutual Information)
+Måler, hvor meget information der deles mellem to variable (fx feature og label):
+I(X,Y) = ∑∑p(x,y)log(p(x,y)/(p(x)p(y)))
+	• p(x,y): fælles sandsynlighed for x og y
+	• p(x): sandsynligheden for x
+Kode-eksempel med scikit-learn:
+from sklearn.feature_selection import SelectKBest, mutual_info_regression
+selector = SelectKBest(score_func=mutual_info_classif, k=10)
+filtered_data = selector.fit_transform(X, y)
+Korrelations-baseret featureudvælgelse
+Pearson's korrelationskoefficient mellem features måler lineær sammenhæng:
+r_xy = ∑(x_i - x̄)(y_i - ȳ) / (√∑(x_i - x̄)² · √∑(y_i - ȳ)²)
+Hvis to features har høj korrelation (|r_xy| > 0.9), kan en af dem fjernes, da de indeholder redundant information.
+Outliers
+Anomaliteter eller korrupte datapunkter betragtes som outliers og kan påvirke modeller negativt.
+Outliers kan ofte identificeres med statistiske metoder som Z-score: Z = (x - μ)/σ
+hvor μ er middelværdien og σ er standardafvigelsen.
+Et datapunkt betragtes som outlier hvis |Z| > p, hvor p typisk er 2 eller 3.
+På visualiseringen ses forskellige tærskelværdier (2, 3, 4, 5) for outlier-detektion og hvordan de identificerer forskellige mængder af outliers.
+Opsummering af frasorteringsmetoder
+Metode	Styrke	Svaghed
+Manuel filtrering	Simpel og intuitiv	Subjektiv, domæne-specifik
+Tærskel-baseret	Nem at anvende	Følsom overfor tærskelværdi
+Statistisk/ML-baseret	Datadrevet, objektiv	Beregningsmæssigt intensiv
+Outlierdetektion	Effektiv fjernelse af anomaliteter	Risiko for at fjerne brugbar data
+Oprensning
+Tidsrækkesignaler
+Mange datatyper kan betragtes som tidsserier:
+	• Et pixelkoordinat for en sekvens af billeder (video)
+	• Lydoptagelser fra en mikrofon
+	• Accelerationsdata fra ure, telefoner, osv.
+	• Vejrmålinger (temperatur, vindhastighed, luftfugtighed)
+Tidsrækkesignaler er ofte påvirket af støj, der kræver særlig oprensning.
+Støj og data
+I praksis er støj uundgåelig. Afhængigt af signal-støj forholdet (SNR - signal-to-noise ratio) kan støj vanskeliggøre maskinlæring betydeligt.
+Støj kan føre til overlap mellem features, hvilket gør klassifikation vanskeligere, som vist i scatter-plottet med overlappende røde og blå punkter.
+Impulsiv støj
+Impulsiv støj (også kaldet salt/pepper noise) er udbredt i forskellige signalapplikationer. Denne type støj viser sig som pludselige, kortvarige udslag i signalet.
+Årsager:
+	• Fejl i hukommelsesceller eller sensorer
+	• Støjkilder med transienter (pludselige ændringer)
+Grafen viser et signal med høje og lave impulsive støjspidser.
+Gaussisk støj
+Kan beskrives matematisk som samples fra en normalfordeling:
+p(z) = (1/√(2πσ²)) · e^(-(z-μ)²/(2σ²))
+Sensorstøj eller elektronisk kredsløbsstøj kan typisk tilnærmes som Gaussisk støj.
+Selvom de færreste reelle støjkilder er perfekt Gaussiske, anvendes denne antagelse ofte i praksis på grund af dens matematiske egenskaber.
+Generel additiv støj
+For nogle signaltyper (f.eks. lyd) er det normalt at observere en sum af signaler:
+y(n) = x(n) + v(n)
+Hvor:
+	• x(n) er det ønskede signal
+	• v(n) er støjsignalet
+Eksempler:
+	• Et miks af talesignaler
+	• Ét talesignal optaget med andre lyde i baggrunden
+Baggrundskilder kan minde om det signal, der ønskes analyseret/klassificeret, hvilket gør simple støjmodeller utilstrækkelige.
+Støjreduktion
+En strategi til at forbedre data er at reducere støj gennem præprocessering.
+Der findes adskillige metoder til støjreduktion, og mange er baseret på filtrering:
+Filtrering: Et system der omdanner et input signal x(n) til et output y(n) ved at fremhæve ønskede komponenter og dæmpe uønskede komponenter.
+Foldning (Convolution)
+Filtrering foretages i praksis gennem foldning:
+y(n) = (h * x)(n) = ∑ h(m)x(n-m)
+hvor:
+	• h er filteret (impulsresponsen)
+	• x er input signalet
+I praksis bruges et filter af endelig længde (m=0 til m=M-1).
+Konceptet kan udvides til flere dimensioner for billedbehandling.
+Moving Average Filter
+MA filteret udglatter signaler gennem et løbende gennemsnit:
+y(n) = (1/M) · ∑ x(n-m)
+Dette er en form for foldning hvor h(m) = 1/M for alle m.
+MA filtre er effektive til at reducere Gaussisk støj men bevarer ikke skarpe overgange i signalet.
+Visualiseringen viser, hvordan forskellige vinduesstørrelser (M=5 og M=11) påvirker filtreringen - større vinduer giver mere udglatning men mindre detalje.
+Median Filter
+En anden mulighed er at filtrere baseret på medianværdien over et løbende vindue:
+y(n) = median{x(n-M+1),...,x(n)}
+I modsætning til MA filter, er medianfilter ikke en lineær operation og kan derfor ikke udtrykkes som foldning.
+Medianfiltre er særligt velegnede til at reducere impulsiv støj, da de effektivt ignorerer ekstreme værdier.
+Tids- og frekvensdomæne
+Filtrering kan foretages i både tids- og frekvensdomænet:
+	• Tidsdomæne: Arbejder direkte med signalværdier over tid
+	• Frekvensdomæne: Arbejder med signalets frekvenskomponenter
+I frekvensdomænet kan filtre designes til at fjerne bestemte frekvenser, hvilket er brugbart når støjen har klare frekvenskarakteristika (f.eks. 50 Hz strømnetinterferens).
+Frekvensdomænefiltrering har ofte beregningsmæssige fordele ved komplekse filtre.
+(Diskret) Fourier Transform
+Fourier-transformationen konverterer signaler mellem tids- og frekvensdomænet:
+DFT (Diskret Fourier Transform): X(k) = ∑ x(n)e^(-j(2π/N)kn)
+Invers DFT: x(n) = (1/N) ∑ X(k)e^(j(2π/N)kn)
+X(k) er kompleks og indeholder både amplitude (|X(k)|) og fase (arg(X(k))) information.
+Visualiseringen viser et tidsdomænesignal og dets frekvensdomænerepræsentation (amplitudespektrum).
+Frekvensdomænefiltrering
+Proces:
+	1. Identificér uønsket støj gennem frekvenskarakteristika
+	2. Multiplicér frekvensdata med en ønsket filtreringsfunktion: Y(k) = H(k) · X(k)
+	3. Transformér tilbage til tidsdomænet: y(n) = F^(-1){H(k) · X(k)}
+Forskellige filtertyper:
+	• Lavpasfilter: Bevarer lave frekvenser, fjerner høje
+	• Højpasfilter: Bevarer høje frekvenser, fjerner lave
+	• Båndpasfilter: Bevarer frekvenser inden for et bestemt bånd
+	• Båndstopfilter: Fjerner frekvenser inden for et bestemt bånd
+FIR (Finite Impulse Response) Filtre
+FIR filtre udfører foldning med en endelig-længde impulsrespons:
+y(n) = ∑ h(m)x(n-m)
+Egenskaber:
+	• Impulsresponsen h(m) definerer filterkarakteristikken
+	• Lineær fase (ingen forvrængning af faseinformation)
+	• Stabile og relativt simple at implementere
+	• Kan kræve høj filterlængde for skarp frekvensselektivitet
+IIR (Infinite Impulse Response) Filtre
+IIR filtre inkluderer rekursiv feedback - output afhænger af tidligere output:
+y(n) = ∑ b(m)x(n-m) - ∑ a(m)y(n-m)
+Egenskaber:
+	• Potentielt uendelig impulsrespons
+	• Effektivt design (kræver typisk færre koefficienter end FIR)
+	• Kan være ustabile hvis ikke designet korrekt
+	• Typisk mindre beregningsmæssigt krævende end FIR ved sammenlignelig selektivitet
+Python Eksempler
+To eksempler på filterimplementering i Python:
+	1. "Ideelt" lavpasfilter med FFT:
+import numpy as np
+from scipy.fft import fft, ifft, fftfreq
+# FFT
+X_freq = np.fft.fft(x_noisy)
+frequencies = np.fft.fftfreq(len(x_noisy), d=1/fs)
+# Apply frequency domain filtering
+X_filtered = X_noisy.copy()
+X_filtered[np.abs(frequencies) > cutoff_freq] = 0
+# Inverse FFT to time domain
+x_clean = np.fft.ifft(X_filtered).real
+	1. Filterdesign med SciPy.signal:
+import scipy.signal as signal
+import matplotlib.pyplot as plt
+# Design a low-pass filter
+cutoff = 1000  # frequency in Hz
+fs = 44100     # sampling rate in Hz
+order = 4      # filter order
+b, a = signal.butter(order, cutoff, btype='low', fs=fs)
+# Visualize filter
+w, h = signal.freqz(b, a, fs=fs)
+plt.plot(w, abs(h))
+plt.title('Filter Frequency Response')
+plt.xlabel('Frequency [Hz]')
+plt.ylabel('Amplitude')
+plt.grid()
+plt.show()
+Optimale Filtre
+Optimale filtre udnytter alle data i samplesættet til at fjerne støj på en matematisk optimal måde.
+Signal model: y(n) = x(n) + v(n)
+hvor:
+	• x(n): ønsket signal
+	• v(n): støjsignal
+Optimale filtre minimerer et optimeringskriterie, ofte under sidebetingelser.
+Wiener Filter
+Et typisk optimeringskriterie er middelkvadreret fejl (MSE - mean squared error):
+J(h) = E[(x(n) - (h * y)(n))²]
+Wiener filteret er den løsning der minimerer MSE.
+Praktiske overvejelser:
+	• Kræver forhåndsviden om energien af x(n) eller v(n)
+	• Kan estimeres i perioder/områder hvor et af signalerne ikke er til stede
+Wiener Filter i Python
+SciPy tilbyder en implementering af Wiener filteret:
+from scipy.signal import wiener
+filtered_signal = wiener(noisy_signal, mysize=5, noise=0.2)
+Parametrene:
+	• mysize: Størrelsen af filtervinduet
+	• noise: Støjniveau (kan estimeres eller angives manuelt)
+Udvidelse til 2D
+Foldning (2-D)
+For 2D-signaler (f.eks. billeder) udføres foldning i to dimensioner:
+z(x,y) = h * f(x,y) = ∑∑ h(i,j)f(x-i,y-j)
+Samme princip som 1D, men med et 2D-filter (kernel) der glider over billedet.
+Middelværdifiltrering (average/mean filter)
+I 2D udjævner vi data ved at tage middelværdien af nærliggende pixels:
+f̂(x,y) = (1/mn) ∑ g(s,t)
+hvor g er et udsnit af støjfyldt data og mn er antallet af pixels i udsnittet.
+Dette svarer til at folde billedet med en uniform maske (f.eks. en 3×3 matrix med alle værdier = 1/9).
+Median Filter
+I 2D sorteres alle pixelværdier i et vindue (f.eks. 3×3 eller 5×5) efter værdi, og den midterste værdi (medianen) erstatter centerværdien.
+Eksemplet viser et 5×5 vindue med værdier, hvor medianen (124) findes og bruges som ny værdi.
+Opgaver
+Opgave 1
+	1. Vælg/download et datasæt med outlier-problemer (fx fra https://www.dbs.ifi.lmu.de/research/outlier-evaluation/DAMI/)
+	2. Visualisér data (fx parvise features) og identificér problemet
+	3. Undersøg hvilke features der er vigtige ift. gensidig information og korrelation
+	4. Anvend Z-score med passende tærskel (Z > p) til at finde outliers
+Opgave 2
+	1. Find et eksempel på et 1D tidsrække sensorsignal (fx IMU data fra Kaggle)
+	2. Lav Python script der kan lavpas filtrere signalet ved brug af SciPy.signal
+	3. Plot signal før filtrering sammenlignet med forskellige filtrerede versioner med varierende cutoff frekvens
+	4. Ekstra: Læg lavfrekvent støj (fx en sinus med 50 Hz) på signalet og design et højpas filter der kan fjerne støjen
+
+Fra <https://claude.ai/chat/1564b05f-cc2d-4c46-85e3-65b2ed7de178> 
+
+
+Noter: Datafiltrering og Signalbehandling
+Disse noter omhandler, hvordan man forbedrer datakvaliteten ved at filtrere og rense data. Forelæsningen fokuserer på både praktiske og teoretiske aspekter af filtrering, og der gives eksempler fra virkeligheden, såsom sensor- og aksometerdata, som kan optræde i mange AI-projekter.
+
+1. Introduktion og Motivation
+	• Formål med filtrering:
+Data, især fra sensorer, indeholder ofte støj og irrelevante målinger. For at opnå gode resultater med AI-modeller er det afgørende at forbedre datakvaliteten gennem filtrering.
+		○ Relevans: Udvælgelse af de data, der rent faktisk understøtter det problem, man forsøger at løse.
+		○ Støjreduktion: Fjernelse af tilfældige udsving eller unøjagtigheder, så de bagvedliggende signaler kan identificeres tydeligere.
+	• Filtreringsparadigme:
+Filtrering kan tænkes som et filtregnsproblem – man “sifter” data for at beholde de vigtige dele og fjerne de irrelevante eller støjende elementer.
+
+2. Tilgange til Filtrering af Data
+2.1 Manuel Filtrering (Domæneekspertise)
+	• Beskrivelse:
+En ekspert (eller den, der kender domænet) vælger manuelt, hvilke datapunkter der er relevante.
+	• Fordele: 
+		○ Hurtig og simpel metode, særligt når datamængden er begrænset.
+		○ Udnytter praktisk erfaring med f.eks. sensorers opførsel.
+	• Ulemper: 
+		○ Risiko for at overse skjulte sammenhænge (fx når angribende aktører ændrer adfærd).
+		○ Subjektivitet; hvis eksperten ikke vælger optimalt, kan vigtig information gå tabt.
+2.2 Tærskelbaseret Filtrering
+	• Beskrivelse:
+Data filtreres ud fra et fastsat kriterium – for eksempel at beholde kun de datapunkter, der overstiger en bestemt værdi (tærskel).
+	• Eksempel:
+Ved analyse af aksometerdata kan man vælge at beholde målinger, der indikerer aktivitet (fx hvis et gennemsnitligt aktivitetsniveau over et tidsvindue overstiger en given grænse).
+	• Fordele & Ulemper: 
+		○ Simpelt at implementere ved hjælp af et script, men kræver finjustering af tærskelværdien for at opnå optimal filtrering.
+2.3 Statistiske Metoder: Mutual Information og Korrelation
+	• Mutual Information (Gensidig Information): 
+		○ Definition: Et mål for, hvor meget information der deles mellem to variable (fx en feature og en label).
+		○ Nøglepointer: 
+			§ Hvis to variable er uafhængige, bliver mutual information 0, da den fælles sandsynlighed p(x,y)p(x, y)p(x,y) svarer til p(x)×p(y)p(x) \times p(y)p(x)×p(y) og logaritmen af 1 er 0.
+	• Korrelation: 
+		○ Pearsons Korrelationskoefficient: 
+			§ Mål for, hvor lineært to features hænger sammen.
+			§ Værdier tæt på +1 eller -1 indikerer, at de to features indeholder stort set den samme information.
+		○ Praktisk anvendelse: 
+			§ Hvis to features korrelerer for stærkt (eksempelvis >0,9), kan det være hensigtsmæssigt at fjerne den ene for at reducere redundans.
+
+3. Typer af Støj og Deres Karakteristika
+	• Støjtyper: 
+		○ Impulsiv Støj: 
+			§ Opstår som pludselige "spidser" eller udbrud (fx hvide eller sorte pixels i et billede, tastaturklik i lydoptagelser).
+		○ Konstant/Gaussisk Støj: 
+			§ Forekommer som en konstant baggrundsstøj, ofte modelleret med en normalfordeling (gaussisk støj).
+		○ Additiv Støj: 
+			§ Signalmodellen antager, at det observerede signal yyy er summen af det ønskede signal xxx og støj nnn: y=x+ny = x + ny=x+n 
+			§ Eksempel: Aksometerdata, hvor signalet fra den ønskede bevægelse adskilles fra baggrundsrystelser.
+
+4. Filtrering i Tidsdomænet
+4.1 Moving Average Filter (Løbende Gennemsnit)
+	• Princip:
+Udregn gennemsnittet over et fast tidsvindue af datapunkter for at glatte udsving.
+	• Matematisk Beskrivelse:
+For et signal x[n]x[n]x[n] med vindueslængde MMM: y[n]=1M∑m=0M−1x[n−m]y[n] = \frac{1}{M} \sum_{m=0}^{M-1} x[n-m]y[n]=M1​m=0∑M−1​x[n−m] 
+	• Effekt:
+Reducerer støj, men kan “udvande” signalets skarpe kanter, hvis vinduet bliver for bredt.
+4.2 Medianfilter
+	• Princip:
+Udskifter værdien i et tidsvindue med medianen af de værdier, der ligger inden for vinduet.
+	• Brug:
+Især effektivt til at fjerne impulsiv støj, da medianen ikke påvirkes af ekstreme værdier.
+	• Bemærkning:
+Det kan være vanskeligt at visualisere, da filteret udvælger ét enkelt datapunkt fra et sorteret datasæt.
+4.3 Foldning (Convolution)
+	• Beskrivelse:
+Den matematiske operation, der ligger til grund for mange filtreringsmetoder.
+	• Forklaring:
+Givet to sekvenser, h[n]h[n]h[n] (impulsresponsen, dvs. filterets “form”) og x[n]x[n]x[n] (inputsignalet), beregnes outputsignalet y[n]y[n]y[n] som: y[n]=∑m=−∞∞h[m]⋅x[n−m]y[n] = \sum_{m=-\infty}^{\infty} h[m] \cdot x[n-m]y[n]=m=−∞∑∞​h[m]⋅x[n−m] 
+	• Visualisering:
+Tænk på, at du “flytter” filterets vektor hen over signalet, ganger de overlappende værdier og summerer dem.
+
+5. Filtrering i Frekvensdomænet
+5.1 Diskret Fourier Transform (DFT) og Inverse DFT
+	• Formål:
+Transformér et tidsdomænesignal til frekvensdomænet, hvor man kan se de enkelte sinuskomponenter.
+	• Grundlæggende Operation:
+Ved at multiplicere signalet med en kompleks eksponentialfunktion, udtrækkes amplituden og fasen for de forskellige frekvenser.
+	• Vigtig Information: 
+		○ Det komplekse tal repræsenterer både amplitude (længden af vektoren) og fase (vinklen).
+		○ Ved at udføre en inverse DFT kan man rekonstruere det originale signal uden tab af information.
+5.2 Filterdesign i Frekvensdomænet
+	• Eksempler på filtre: 
+		○ Lavpasfilter: Tillader lave frekvenser og fjerner høje frekvenser (f.eks. for at fjerne 50 Hz støj fra elnettet).
+		○ Højpasfilter: Tillader høje frekvenser og fjerner lave frekvenser.
+		○ Båndpasfilter: Tillader frekvenser inden for et bestemt interval.
+	• Designovervejelser:
+Filterets karakteristika bestemmes af den valgte “cut-off” frekvens og antallet af filterkoefficienter. Højere orden (flere koefficienter) kan give en skarpere afskæring, men øger beregningskompleksiteten.
+5.3 Sammenhæng mellem Tids- og Frekvensdomænefiltrering
+	• Matematisk relation:
+Filtrering i tidsdomænet (via convolution) svarer til multiplikation i frekvensdomænet – og omvendt.
+	• Fordel:
+Ved at transformere signalet til frekvensdomænet kan man mere præcist udvælge de frekvenser, man ønsker at fjerne eller bevare.
+
+6. FIR vs. IIR Filtre
+6.1 FIR (Finite Impulse Response) Filtre
+	• Kendetegn: 
+		○ Har en impulsrespons, der kun varer i en begrænset periode (kun et bestemt antal samples er forskellige fra nul).
+		○ Eksempel: Moving average filter.
+	• Fordele: 
+		○ Lineær fase (dvs. fasen af signalet bevares, ingen faseforvrængning).
+		○ Altid stabile.
+	• Ulemper: 
+		○ Kan kræve mange koefficienter for at opnå høj frekvensselektivitet, hvilket betyder højere beregningsomkostninger.
+6.2 IIR (Infinite Impulse Response) Filtre
+	• Kendetegn: 
+		○ Inkluderer en feedback-mekanisme (tilbagekoblingsløkker), hvor tidligere outputs også bruges som input.
+		○ Impulsresponsen kan i princippet vare uendeligt.
+	• Fordele: 
+		○ Kan opnå en given frekvensselektivitet med færre koefficienter, hvilket ofte betyder lavere beregningskompleksitet.
+	• Ulemper: 
+		○ Risiko for ustabilitet, hvis filterkoefficienterne ikke er korrekt justeret.
+		○ Ikke nødvendigvis lineær fase.
+
+7. Praktiske Eksempler og Opgaver
+7.1 Feature Reduction og Outlier Detection
+	• Problemstilling:
+Ved store datasæt med mange sensorer er det ofte nødvendigt at: 
+		○ Fjerne irrelevante datapunkter.
+		○ Reducere redundans ved at identificere stærkt korrelerede features (brug fx mutual information og Pearson-korrelation).
+	• Opgaveforslag: 
+		○ Undersøg datasæt fra et projekt (fx fra en bank eller en industriel maskine) og brug statistiske metoder til at identificere de vigtigste features.
+7.2 Signalfiltrering på Aksometerdata
+	• Problemstilling:
+Et støjfyldt aksometersignal skal renses for at fjerne baggrundsstøj.
+	• Opgaveforslag: 
+		○ Implementér et moving average filter med forskellig vindueslængde for at observere, hvordan støjen reduceres, og diskuter kompromiset mellem støjreduktion og signaludtynding.
+7.3 Filterdesign i Frekvensdomænet
+	• Problemstilling:
+Design et filter (f.eks. et lavpasfilter) til at fjerne uønsket frekvens (fx 50 Hz fra elektrisk støj) fra et sensor-signal.
+	• Opgaveforslag: 
+		○ Brug en diskret Fourier transform (DFT) til at analysere signalets frekvensindhold.
+		○ Design et filter, der kun lader frekvenser under en bestemt cut-off passere.
+		○ Sammenlign effekten med et traditionelt moving average filter.
+7.4 Optimal Filtrering (Minimere Mean Square Error)
+	• Problemstilling:
+Ved additiv støj kan man designe et filter, der minimerer middelkvadratfejlen mellem det ønskede signal og det filtrerede output.
+	• Opgaveforslag: 
+		○ Anvend optimeringskriteriet Mean Square Error (MSE) til at finde de optimale filterkoefficienter.
+		○ Diskutér, hvordan et estimat af støjens energi (målt i perioder uden aktivt signal) kan indgå i filterdesignet.
+
+8. Centrale Pointer og Opsummering
+	• Filtrering er afgørende for at sikre, at de data, der anvendes til træning af AI-modeller, er rene og relevante.
+	• Forskellige metoder (manuel filtrering, tærskelbaseret, statistiske metoder) har hver deres fordele og begrænsninger, og valget afhænger af datamængde og anvendelseskontekst.
+	• Tidsdomænefiltre (moving average, medianfilter) og frekvensdomænefiltre (via DFT) giver forskellige muligheder for at fjerne støj – og de matematiske operationer bag (f.eks. foldning) er fundamentale for forståelsen.
+	• Valget mellem FIR og IIR filtre afhænger af krav til faselinje, beregningskompleksitet og stabilitet.
+	• Praktiske eksempler og opgaver giver mulighed for at afprøve teorien i konkrete situationer og dermed opnå en dybere forståelse af, hvordan filterdesign kan påvirke både datakvalitet og modelpræstation.

@@ -1,0 +1,230 @@
+Notater fra Forelæsning – Introduktion til "AI og Data"
+1. Kursusintroduktion og Struktur
+Underviser og Kursusmål
+	• Underviser: Jesper
+	• Kursusnavn: AI og Data
+	• Formål:
+		○ At introducere de centrale emner, der er forudsætningen for at træne AI-modeller.
+		○ At give indsigt i, hvordan data – og især datakvalitet – spiller en afgørende rolle i udviklingen af AI-systemer.
+		○ At lære metoder til indsamling, forbehandling (præprocessering) og annotering af data.
+Kursusforløb
+	• Første kursusgang (dagens forelæsning):
+		○ Kursusintroduktion, overblik over emner og en introduktion til de grundlæggende begreber inden for AI og data.
+	• Anden kursusgang (torsdag):
+		○ Fokus på databaser: Brug af databaser som datakilde og struktur til data.
+	• Tredje kursusgang:
+		○ Dataannotering og håndtering af manglende data – herunder en praktisk workshop, hvor et datasæt med mangler gennemgås.
+	• Efterfølgende forelæsninger og workshops:
+		○ Præprocessering og forbedring af datakvalitet (bl.a. støjreduktion).
+		○ Dataanalyse og visualisering, inklusiv interaktiv datavisualisering.
+		○ Den afsluttende lektion er endnu ikke fastlagt og kan tilpasses de studerendes projekter.
+Praktiske Forhold
+	• Materiale:
+		○ Hovedbog, diverse internetkilder og videoer.
+		○ Ekstra materiale og opgaver uploades på Moodle.
+	• Undervisningsformat:
+		○ Hver kursusgang varer ca. 2 timer (inklusive pauser).
+		○ Mulighed for at stille spørgsmål under forelæsningen og få sparring både i lokalet og via Teams.
+	• Eksamen:
+		○ Månedlige eksamener: Hver studerende får 20 minutter (15 min til præsentation og 5 min til votering).
+		○ Eksamensoplægget trækker på emner fra forelæsningerne.
+		○ Et mini-projekt (som eventuelt kan laves i grupper) kan være en del af kursusarbejdet, men udgør ikke nødvendigvis hoveddelen af eksamen.
+
+2. Læringsmål og Kursusets Formål
+Hovedmålene med kurset
+	• Forstå datagrundlaget:
+		○ Hvilken rolle spiller data i udviklingen af AI-modeller?
+		○ Hvordan vurderes og forbedres datakvaliteten?
+	• Annotering af data:
+		○ Hvad er annotering, og hvorfor er det essentielt for supervised læring?
+	• Proces og metoder:
+		○ Hvordan udvælges data til AI-metoder?
+		○ Hvilke præprocesseringsteknikker kan anvendes for at forbedre datakvaliteten (f.eks. håndtering af støj og manglende data)?
+	• Anvendelse:
+		○ Hvordan kan man identificere konkrete problemer, som kan løses med AI, og hvilke data er nødvendige for at gøre det?
+Udvalgte læringsmål (uddrag fra studieordningen)
+	• Kendskab til datas rolle i udviklingen af AI-modeller.
+	• Viden om annotering: At kunne forklare, hvordan data kan mærkes (fx et billede med en bil skal have label "bil").
+	• Forståelse for datakvalitet: Hvordan man håndterer støj og manglende data.
+	• Evnen til at forberede data: At klargøre data til brug i videre AI-metoder.
+
+3. Grundlæggende Begreber: AI, Machine Learning og Deep Learning
+Definitioner og Overordnede Koncepter
+	• Kunstig Intelligens (AI):
+		○ Evnen til at udvise menneskelig adfærd på en intelligent måde.
+		○ Omfatter mange metoder til at behandle data og træffe beslutninger.
+	• Machine Learning (ML):
+		○ En delmængde af AI, hvor systemer lærer og forbedrer sig baseret på data.
+		○ Bruges til at træne modeller til f.eks. klassifikation (bestemmelse af hvilken klasse et datapunkt tilhører) eller regression (forudsigelse af kontinuerlige værdier).
+	• Deep Learning:
+		○ En underkategori af ML, der anvender dybe neurale netværk.
+		○ Evner at lære komplekse mønstre direkte fra rå data uden nødvendigvis at skulle udføre manuel feature-ekstraktion.
+Det Typiske AI-Systems Livscyklus
+	1. Dataindsamling:
+		○ Opsamling af rå data fra forskellige kilder.
+	2. Præprocessering:
+		○ Rensning af data, håndtering af støj og mangler.
+	3. Feature-ekstraktion:
+		○ Udtrækning af vigtige egenskaber (features) fra data, der reducerer kompleksiteten.
+	4. Modeltræning:
+		○ Brug af de forberedte data til at træne en maskinlæringsmodel.
+	5. Validering:
+		○ Test af modellen på et separat datasæt for at vurdere dens præstation.
+	6. Deployment:
+		○ Implementering af modellen i et system, hvor den kører løbende.
+	7. Monitorering:
+		○ Overvågning af systemets ydeevne og eventuel opdatering af modellen.
+	Bemærk: I dette kursus fokuseres primært på de første trin – dataindsamling og præprocessering.
+
+4. Data: Typer, Kvalitet og Præprocessering
+Typer af Data
+	• Struktureret Data:
+		○ Data med en fast foruddefineret struktur (typisk rækker og kolonner).
+		○ Eksempler:
+			§ Databaser, regneark, CSV-filer, XML-filer, JSON-filer.
+			§ Typiske datapunkter: Alder, by, civilstand.
+		○ Anvendelse: Velegnet til kvantitativ analyse (fx kundesegmentering, lagerstyring, finansiel prognose).
+	• Ustruktureret Data:
+		○ Data uden en fast struktur.
+		○ Eksempler:
+			§ Tidsserier fra sensorer (fx lydoptagelser, billede- eller videosignaler).
+		○ Udfordringer:
+			§ Ofte større datamængder.
+			§ Kræver ekstra forarbejdning (præprocessering) for at udtrække brugbare features, fx frekvensanalyse, energimålinger og nul-overgange i lydsignaler.
+		○ Overgang til struktureret data: Ved hjælp af domænespecifik feature-ekstraktion kan ustruktureret data omdannes til en form, der er nemmere at analysere kvantitativt.
+Datakvalitet og Udfordringer
+	• Støj:
+		○ Fx sensorstøj, der kan maskere vigtig information.
+		○ Eksempel: To klasser, der skal adskilles, men som overlapper på grund af støj.
+	• Manglende Data:
+		○ Datafelter der mangler information (f.eks. en databases rækker uden indkomstoplysninger).
+		○ Spørgsmålet: Skal rækker med manglende data fjernes, eller skal der indsættes estimerede værdier?
+	• Bias:
+		○ Forudindtagede holdninger i data (fx skæv vægtning i spørgeskemaundersøgelser).
+	• Præprocessering:
+		○ Rensning og forberedelse af data for at øge kvaliteten, fx ved at fjerne støj, imputere manglende værdier og udtrække relevante features.
+	• Data Augmentation:
+		○ Teknikker til at udvide datasættet ved at skabe syntetiske variationer (f.eks. rotere billeder, ændre farvetoner).
+
+5. Dataindsamling: Metoder og Eksempler
+Kilder til Data
+	• Offentlige Datasæt:
+		○ Platforme som Kaggle og Cenodo.
+		○ Godt udgangspunkt, men kræver ofte vurdering af datakvaliteten.
+	• Egen Dataindsamling:
+		○ Sensorer: Brug af mikrofoner, kameraer, tryksensorer, accelerometre, osv.
+		○ Crowdsourcing: Indsamling af data via brugerbidrag, fx ved at lade folk indsende billeder eller lydoptagelser.
+		○ Webscraping: Automatisk indsamling af data fra internettet (se næste afsnit).
+		○ Data Augmentation: Brug af metoder til at generere nye data ud fra eksisterende, fx ved at rotere eller ændre billeddata.
+		○ Generative Modeller: Metoder, der genererer syntetisk data (dog ofte trænet på eksisterende data).
+Eksempler fra Virkeligheden
+	• Diagnostik via Lydoptagelser:
+		○ Indsamling af stemmeoptagelser til at diagnosticere sygdomme (fx Parkinsons), hvor brugere optager deres stemme via en app.
+	• Miljøovervågning:
+		○ Opsætning af kameraer eller sensorer til at overvåge et område (fx havnefronten) med mulighed for at anvende data augmentation (rotering, zoom osv.) for at træne en robust model.
+	• Crowdsourcing Projekter:
+		○ Eksempler hvor borgere bidrager med data (fx billeder fra en mobiltelefon) til at overvåge fysiske forhold eller miljøforhold.
+
+6. Webscraping med Python – Et Konkret Eksempel
+Hvad er Webscraping?
+	• Definition:
+		○ Processen med at automatisere indsamling af data fra hjemmesider ved at hente og analysere HTML-indhold.
+	• Formål:
+		○ At udtrække strukturerede data (fx titler, tabeller, billeder) fra hjemmesider.
+Nøglebiblioteker i Python
+	• urllib / requests:
+		○ Bruges til at hente HTML-sider.
+	• BeautifulSoup:
+		○ Hjælper med at parse HTML og udtrække specifik information (fx tags, tekst).
+	• re (Regular Expressions):
+		○ Bruges til at søge efter og udtrække mønstre i tekst.
+	• MechanicalSoup:
+		○ Kan håndtere interaktive elementer (fx formularer og knapper) på hjemmesider.
+Trinvis Eksempelkode
+	1. Import af nødvendige biblioteker:
+
+python
+Kopiér
+import urllib.request
+from bs4 import BeautifulSoup
+import re
+	2. Hente HTML fra en hjemmeside:
+
+python
+Kopiér
+url = "http://www.eksempel.dk"
+response = urllib.request.urlopen(url)
+html = response.read()
+	3. Parse HTML med BeautifulSoup:
+
+python
+Kopiér
+soup = BeautifulSoup(html, "html.parser")
+	4. Udtræk information – f.eks. sidens titel:
+
+python
+Kopiér
+title = soup.find("title").get_text()
+print("Side titel:", title)
+	5. Brug af regular expressions for at finde mønstre:
+
+python
+Kopiér
+# Eksempel: Find alle forekomster af en tekst, der starter med "A" og slutter med "C"
+matches = re.findall(r'A.*?C', html.decode('utf-8'))
+print(matches)
+	Vigtige Bemærkninger:
+		○ HTML-sider kan have varierende syntaks, hvilket gør det udfordrende at skrive et helt robust script.
+		○ Regular expressions er kraftfulde, men kræver præcis syntaks og fejlhåndtering.
+		○ Der findes avancerede biblioteker (fx BeautifulSoup og MechanicalSoup), som kan forenkle processen og gøre koden mere robust mod ændringer i hjemmesidens struktur.
+Fordele og Udfordringer ved Webscraping
+	• Fordele:
+		○ Kan hurtigt hente store mængder data.
+		○ Godt egnet til at udtrække struktureret data fra statiske sider.
+	• Udfordringer:
+		○ Ændringer i hjemmesidens HTML-struktur kan bryde scriptet.
+		○ Juridiske aspekter og hjemmesidens "robots.txt" skal overholdes.
+		○ Håndtering af dynamisk indhold (fx JavaScript-genereret data) kan kræve særlige metoder.
+
+7. Opsamling og Næste Skridt
+Hovedpointer fra Dagens Forelæsning
+	• Kursusintroduktion:
+		○ Overblik over kursusstruktur, formål, eksamensform og praktiske detaljer.
+	• AI og Data:
+		○ Grundlæggende begreber inden for AI, machine learning og deep learning.
+	• Data:
+		○ Forskellen mellem struktureret og ustruktureret data samt udfordringer med datakvalitet (støj, manglende data, bias).
+	• Dataindsamling:
+		○ Forskellige metoder til at tilgå og indsamle data (offentlige datasæt, egne målinger, crowdsourcing, webscraping og data augmentation).
+	• Praktisk Eksempel på Webscraping:
+		○ En trinvis demonstration af, hvordan man henter og udtrækker data fra en hjemmeside ved hjælp af Python.
+Opgave til Studerende
+	• Øvelse i Webscraping:
+		○ Prøv at implementere et simpelt webscraping-script baseret på eksemplet.
+		○ Gennemse en tutorial (fx på Real Python) for yderligere vejledning.
+		○ Eksperimenter med at udtrække andre data (fx overskrifter, tabeller) fra en valgt hjemmeside.
+		○ Kontakt underviseren eller brug Teams, hvis der opstår spørgsmål eller udfordringer.
+Hvad Kan Forventes Fremad
+	• I de kommende kursusgange vil der blive arbejdet videre med:
+		○ Præprocessering af data og metoder til at håndtere støj og mangler.
+		○ Analyse og visualisering af data for at vurdere datakvaliteten.
+		○ Yderligere praktiske øvelser og workshops med fokus på dataannotation og udtrækning af features.
+		○ Introduktion til interaktiv datavisualisering med værktøjer som D3.js og Matplotlib (i Python).
+
+8. Diagrammer og Tabeller (Beskrevet i Tekst)
+	• Diagram over et typisk AI-system:
+Beskriver den iterative proces:
+Dataindsamling → Præprocessering (inkl. feature-ekstraktion) → Modeltræning → Validering → Deployment → Monitorering
+Diagrammet illustrerer, hvordan data løbende forbedres og modeller justeres baseret på ny feedback og data.
+	• Tabel over Datatyper:
+	Datatype	Beskrivelse	Eksempler
+	Struktureret Data	Data med foruddefineret struktur (rækker/kolonner)	Regneark, databaser, CSV-filer, XML, JSON
+	Ustruktureret Data	Data uden fast struktur	Lydoptagelser, billeder, tidsserier fra sensorer
+
+9. Vigtige Definitioner og Begreber
+	• Annotering:
+Processen med at tilføje labels eller beskrivelser til data, fx at markere et billede med, at der er en bil. Dette er essentielt for supervised læring.
+	• Præprocessering:
+Forberedelse af rå data, herunder rensning, imputering af manglende værdier og udtrækning af relevante features, for at gøre data klar til analyse og modellering.
+	• Data Augmentation:
+Teknikker til at udvide et eksisterende datasæt ved at generere syntetiske variationer (f.eks. ved at rotere billeder, justere farver eller simulere fysiske forhold).

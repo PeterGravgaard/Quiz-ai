@@ -1,0 +1,15 @@
+Dette er et test dokument til Quiz AI applikationen.
+
+Matematik er et fascinerende område der beskæftiger sig med tal, former og mønstre. 
+
+Grundlæggende matematiske operationer omfatter:
+- Addition (sammenlægning)
+- Subtraktion (fratrækning) 
+- Multiplikation (gange)
+- Division (dele)
+
+Algebra arbejder med variabler og ligninger. En variabel er et symbol (som x eller y) der repræsenterer et ukendt tal.
+
+Geometri beskæftiger sig med former som trekanter, firkanter og cirkler. Arealet af en cirkel beregnes med formlen π × r², hvor r er radius.
+
+Statistik handler om at indsamle, organisere og analysere data for at drage konklusioner.

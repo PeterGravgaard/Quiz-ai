@@ -188,12 +188,172 @@ QPushButton:pressed {
      </spacer>
     </item>
     <item>
-     <widget class="QLabel" name="instruction_label">
+     <widget class="QLabel" name="difficulty_label">
       <property name="text">
-       <string>Indtast det emne du vil have spørgsmål om:</string>
+       <string>🎯 Vælg sværhedsgrad:</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignCenter</set>
+      </property>
+      <property name="styleSheet">
+       <string>font-size: 16pt; font-weight: bold; color: #2E7D32;</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <spacer name="verticalSpacer_difficulty_1">
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>20</width>
+        <height>5</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="difficulty_layout">
+      <item>
+       <spacer name="horizontalSpacer_difficulty_1">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QRadioButton" name="easy_difficulty_btn">
+        <property name="text">
+         <string>😊 Let</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="styleSheet">
+         <string>QRadioButton {
+    font-size: 14pt;
+    color: #4CAF50;
+    font-weight: bold;
+}
+QRadioButton::indicator {
+    width: 18px;
+    height: 18px;
+}
+QRadioButton::indicator:checked {
+    background-color: #4CAF50;
+    border: 2px solid #4CAF50;
+    border-radius: 9px;
+}</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="horizontalSpacer_difficulty_2">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>30</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QRadioButton" name="hard_difficulty_btn">
+        <property name="text">
+         <string>🔥 Svær</string>
+        </property>
+        <property name="styleSheet">
+         <string>QRadioButton {
+    font-size: 14pt;
+    color: #FF5722;
+    font-weight: bold;
+}
+QRadioButton::indicator {
+    width: 18px;
+    height: 18px;
+}
+QRadioButton::indicator:checked {
+    background-color: #FF5722;
+    border: 2px solid #FF5722;
+    border-radius: 9px;
+}</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="horizontalSpacer_difficulty_3">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <spacer name="verticalSpacer_difficulty_2">
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>20</width>
+        <height>15</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item>
+     <widget class="QLabel" name="instruction_label">
+      <property name="text">
+       <string>Vælg en metode til at oprette quiz:</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+      <property name="styleSheet">
+       <string>font-size: 16pt; font-weight: bold; color: #2E7D32;</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <spacer name="verticalSpacer_8">
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>20</width>
+        <height>10</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item>
+     <widget class="QLabel" name="topic_section_label">
+      <property name="text">
+       <string>📝 Mulighed 1: Indtast emne manuelt</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+      <property name="styleSheet">
+       <string>font-size: 14pt; font-weight: bold; color: #1976d2;</string>
       </property>
      </widget>
     </item>
@@ -261,10 +421,101 @@ QPushButton:pressed {
       <property name="sizeHint" stdset="0">
        <size>
         <width>20</width>
-        <height>20</height>
+        <height>15</height>
        </size>
       </property>
      </spacer>
+    </item>
+    <item>
+     <widget class="QLabel" name="document_section_label">
+      <property name="text">
+       <string>📄 Mulighed 2: Upload dokument (PDF, Word, Excel)</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+      <property name="styleSheet">
+       <string>font-size: 14pt; font-weight: bold; color: #1976d2;</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <spacer name="verticalSpacer_9">
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>20</width>
+        <height>5</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_4">
+      <item>
+       <spacer name="horizontalSpacer_7">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="document_path_input">
+        <property name="placeholderText">
+         <string>Ingen fil valgt...</string>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>250</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+        <property name="styleSheet">
+         <string>background-color: #f9f9f9;</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="upload_document_btn">
+        <property name="text">
+         <string>Vælg Dokument</string>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>120</width>
+          <height>35</height>
+         </size>
+        </property>
+        <property name="styleSheet">
+         <string>background-color: #ff9800; font-size: 10pt;</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="horizontalSpacer_8">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
     </item>
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout_2">

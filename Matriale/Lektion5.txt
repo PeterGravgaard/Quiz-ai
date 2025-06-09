@@ -1,0 +1,420 @@
+Komprehensive Noter: Visualisering af (støjfuld) data - Lektion 5
+Indledning
+Denne forelæsning af Assoc. Prof. Jesper Rindom Jensen dækker forskellige aspekter af datavisualisering med særligt fokus på at visualisere støjfuld data. Visualisering er en central del af datanalyse, da det giver os mulighed for at opdage mønstre og indsigter i data, som ellers kan være svære at fange med ren numerisk analyse.
+Agenda
+Forelæsningen dækker følgende hovedområder:
+	• Vigtighed af visualisering
+	• Grundlæggende visualisering
+	• Matplotlib biblioteket (https://matplotlib.org/)
+	• Seaborn biblioteket (https://seaborn.pydata.org/)
+	• Visualisering af støjfuld data
+Hvad er datavisualisering?
+Datavisualisering er en grafisk repræsentation af data, der hjælper os med at:
+	• Afsløre mønstre, trends og indsigter i data
+	• Udføre eksplorativ dataanalyse
+Visualiseringer kan tage mange forskellige former som vist på billederne i sliden - fra simple linjegrafer til komplekse heatmaps, scatterplots og distributionsplot. Valget af visualisering afhænger af hvilken type data vi arbejder med og hvilke indsigter vi ønsker at få frem.
+Hvorfor visualisere støjfuld data?
+Der er flere vigtige grunde til at visualisere støjfuld data:
+	1. Forståelse af datakvalitet:
+		○ Identificere outliers (afvigende værdier)
+		○ Detektere støj i datasættet
+	2. Forståelse af statistisk fordeling af data:
+		○ Se hvordan dataen er fordelt
+		○ Identificere om data følger kendte statistiske fordelinger
+	3. Understøtter modelevaluering og fejlfinding:
+		○ Hjælper med at identificere problematiske features
+		○ Viser hvor modellen kan have problemer
+	4. Effektiv kommunikation til stakeholders:
+		○ Gør komplekse sammenhænge forståelige for ikke-tekniske stakeholders
+		○ Fremhæver vigtige observationer visuelt
+Matplotlib Basics
+Matplotlib er det standard plotting-bibliotek i Python og bruges ofte i kombination med NumPy og Pandas.
+Nøgleegenskaber:
+	• Høj grad af tilpasning og kontrol over visualiseringer
+	• Velegnet til både simple og komplekse plots
+	• Rig dokumentation og udbredt anvendelse
+Terminologi:
+	• Figure: Container til plots (kan indeholde flere subplot)
+	• Axes: Individuelle plots i en figure
+	• Labels, Legends, Grid: Elementer der forklarer plottet og øger læsbarheden
+Kodeeksemplet på sliden viser hvordan man laver et simpelt plot af en sinusbølge med støj:
+import matplotlib.pyplot as plt
+import numpy as np
+x = np.linspace(0, 10, 100)
+y = np.sin(x) + np.random.randn(100) * 0.2
+plt.figure(figsize=(8,4))
+plt.plot(x, y, label='Noisy sine wave')
+plt.title('Simple Matplotlib Example')
+plt.xlabel('X-axis')
+plt.ylabel('Y-axis')
+plt.legend()
+plt.grid(True)
+plt.show()
+Seaborn Basics
+Seaborn er bygget ovenpå Matplotlib og tilbyder mere avancerede og visuelt tiltalende statistiske visualiseringer.
+Nøgleegenskaber:
+	• Mere komplicerede og polerede statistiske visualiseringer
+	• Tæt integration med Pandas DataFrames
+	• Forudindstillede temaer og farvepaletter
+	• Højniveau-funktioner til komplekse plot-typer
+Eksempler på Seaborn-plots:
+	• Pairplot (visualiserer parrede relationer i et datasæt)
+	• Distributionsplots (som KDE-plots, histogrammer)
+	• Korrelationsplot (heatmaps)
+Kodeeksemplet på sliden viser hvordan man laver et pairplot af pingvin-data:
+import seaborn as sns
+import matplotlib.pyplot as plt
+# Load the built-in penguins dataset
+penguins = sns.load_dataset('penguins')
+# Create a pairplot colored by penguin species
+sns.pairplot(penguins, hue='species')
+plt.show()
+Typer af dataplot
+Der findes flere forskellige typer af plots, hver egnet til forskellige typer data og analyser:
+	1. Linjediagram (line plot): Forbinder datapunkter med linjer, viser udvikling over tid
+	2. Punktdiagram (scatter plot): Viser individuelle datapunkter, godt til at se sammenhænge
+	3. Histogram: Viser frekvensfordelingen af data, god til at forstå distributioner
+	4. Boksplot (box plot) / Violinplots: Viser statistisk sammenfatning og outliers
+	5. Varmekort (heatmap): Farvekodet matrix, god til korrelationsanalyser
+	6. Plots med usikkerheder (error bars): Viser usikkerhed eller variation i målinger
+Linjediagram
+Linjediagrammer er særligt anvendelige til tidsseriedata, hvor de hjælper med at:
+	• Afsløre trends over tid
+	• Identificere periodicitet eller cykliske mønstre
+	• Detektere skift eller ændringer i data
+Kodeeksemplet på sliden viser et simpelt linjediagram:
+import matplotlib.pyplot as plt
+import numpy as np
+# Generate 50 data points using NumPy
+x = np.linspace(1, 50, 50)
+y = 2 * x + 5  # Linear relationship
+# Create the plot
+plt.plot(x, y)
+plt.xlabel("X-axis")
+plt.ylabel("Y-axis")
+plt.title("Line Plot with 50 Points")
+plt.show() 
+Punktdiagram
+Punktdiagrammer er gode til at visualisere:
+	• Individuelle datapunkter uden forbindelse
+	• Distributioner af data
+	• Korrelationer mellem variable
+Eksempelkoden viser hvordan man laver et simpelt punktdiagram med tilfældige data:
+import matplotlib.pyplot as plt
+import numpy as np
+# Generate 50 random data points
+x = np.random.rand(50) * 10
+y = np.random.rand(50) * 10
+# Create the scatter plot
+plt.scatter(x, y)
+plt.xlabel("X-axis")
+plt.ylabel("Y-axis")
+plt.title("Scatter Plot with 50 Points")
+plt.show() 
+Histogrammer
+Histogrammer er essentielle for at forstå datafordelinger:
+	• Viser frekvensfordelingen af data
+	• Giver indsigt i dataspredning og støjkarakteristikker
+	• Hjælper med at identificere om data følger kendte fordelinger (f.eks. normalfordeling)
+Kodeeksemplet viser et basis-histogram:
+import matplotlib.pyplot as plt
+import numpy as np
+# Generate random data points
+data = np.random.randn(5000)  # Sample from standard normal distribution
+# Create the histogram
+plt.hist(data, bins=30)
+plt.xlabel("Values")
+plt.ylabel("Frequency")
+plt.title("Histogram")
+plt.show()
+Et vigtigt spørgsmål ved histogrammer er valget af bins (søjler). For få bins kan skjule vigtige detaljer, mens for mange kan introducere støj. Der findes forskellige metoder til at bestemme et optimalt antal bins, som f.eks. Sturges' regel eller Freedman-Diaconis regel.
+Kernel Density Estimation (KDE)
+KDE er en alternativ og mere glidende måde at visualisere fordelinger på:
+	• Estimerer sandsynlighedstætheden
+	• Bruger ofte Gaussiske kernels
+	• Giver et mere glidende billede af distributionen end histogrammer
+Den matematiske formel for KDE med Gaussiske kernels er: $$p(x) = \frac{1}{nh} \sum_{i=1}^{n} \frac{1}{\sqrt{2\pi}} e^{-\frac{(x-x_i)^2}{2h^2}}$$
+Hvor:
+	• n er antal datapunkter
+	• h er båndbredde (bestemmende for glatning)
+	• x_i er individuelle datapunkter
+Eksempelkoden viser hvordan man kombinerer et histogram med KDE:
+import matplotlib.pyplot as plt
+import numpy as np
+from scipy.stats import gaussian_kde
+data = np.random.randn(5000)
+hist, bins, _ = plt.hist(data, bins=30, density=True, alpha=0.5)
+density = gaussian_kde(data)
+xs = np.linspace(data.min(), data.max(), 200)
+density_values = density(xs)
+plt.plot(xs, density_values, label='Kernel Density Estimation')
+plt.xlabel("Values")
+plt.ylabel("Density")
+plt.title("Histogram with Kernel Density Estimation")
+plt.legend()
+plt.show()
+Boksplots
+Boksplots er en kompakt måde at visualisere den statistiske sammenfatning af et datasæt:
+	• Viser opsummerende statistikker:
+		○ Q0: Minimum - laveste datapunkt
+		○ Q1: Første kvartil - 25% af data er under denne værdi
+		○ Q2: Median - midterste datapunkt (50% under/over)
+		○ Q3: Tredje kvartil - 75% af data er under denne værdi
+		○ Q4: Maksimum - højeste datapunkt
+	• Whiskers: Typisk baseret på interkvartil range (IQR = Q3 - Q1)
+		○ Normalvis går de til Q1-1.5IQR og Q3+1.5IQR
+		○ Datapunkter udenfor disse grænser vises som outliers (enkeltstående punkter)
+Boksplots er særligt gode til at:
+	• Sammenligne distributioner mellem forskellige grupper
+	• Identificere outliers
+	• Se spredningen i data
+Kodeeksemplet viser hvordan man laver boksplots for tre forskellige datasæt:
+import matplotlib.pyplot as plt
+import numpy as np
+# Generate sample data for three groups
+group1 = np.random.normal(100, 10, 200)
+group2 = np.random.normal(80, 15, 200)
+group3 = np.random.normal(90, 12, 200)
+# Combine the data into a list
+data = [group1, group2, group3]
+# Create the box plot
+plt.boxplot(data, labels=['Group 1', 'Group 2', 'Group 3'])
+plt.xlabel("Groups")
+plt.ylabel("Values")
+plt.title("Box Plot Example")
+plt.show() 
+Violinplots
+Violinplots kombinerer box plots med KDE:
+	• Viser både kvartiler som i box plots
+	• Viser også densitetsfordelingen på siderne (som en violin)
+	• Giver et mere komplet billede af datafordelingen
+Kodeeksemplet viser hvordan man laver violin plots:
+import matplotlib.pyplot as plt
+import numpy as np
+import seaborn as sns
+# Generate sample data for three groups
+group1 = np.random.normal(100, 5, 200)
+group2 = np.random.normal(80, 20, 200)
+group3 = np.random.normal(90, 10, 200)
+# Combine the data into a list
+data = [group1, group2, group3]
+# Create the violin plot
+plt.figure(figsize=(8, 6))
+sns.violinplot(data=data)
+plt.xticks(ticks=[0, 1, 2], labels=['Group 1', 'Group 2', 'Group 3'])
+plt.xlabel("Groups")
+plt.ylabel("Values")
+plt.title("Violin Plot Example")
+plt.show() 
+Varmeplot (Heatmap)
+Varmeplots er særligt nyttige til:
+	• Hurtig visualisering af max/min værdier
+	• Forståelse af korrelationer mellem features
+	• Identificere mønstre i matrixdata
+Eksempelkoden viser hvordan man laver et korrelationsheatmap:
+import matplotlib.pyplot as plt
+import seaborn as sns
+import pandas as pd
+# Load the Palmer Penguins dataset
+penguins = sns.load_dataset('penguins')
+# Select features for correlation analysis
+features = ['bill_length_mm', 'bill_depth_mm', 'flipper_length_mm', 'body_mass_g']
+selected_data = penguins[features]
+# Calculate correlation matrix
+correlation_matrix = selected_data.corr()
+# Create heatmap
+sns.heatmap(correlation_matrix, annot=True, cmap='coolwarm')
+plt.title("Correlation Heatmap of Penguin Features")
+plt.xticks(rotation=45) 
+plt.show() 
+Ved varmeplots er valget af farveskala (colorbar) vigtigt. Man bør overveje:
+	• Om farveskalaen er symmetrisk omkring 0 for korrelationsplot
+	• Om den har nok kontrast til at vise subtile forskelle
+	• Om farveskalaen er intuitiv (f.eks. rød for høje værdier, blå for lave)
+Plot med usikkerheder
+Når man visualiserer resultater såsom klassifikationsrater, er det vigtigt at inkludere usikkerheder:
+	• Giver mere ærlig repræsentation af resultater
+	• Viser variabilitet i målinger
+	• Tillader statistisk sammenligning mellem metoder
+Usikkerheden kan vises som:
+	• Standardafvigelser
+	• Konfidensintervaller
+Eksempelkoden viser hvordan man laver en graf med error bars:
+import matplotlib.pyplot as plt
+import numpy as np
+# Sample data for classification methods
+methods = ['Logistic Regression', 'SVM', 'Decision Tree', 'Random Forest']
+accuracies = [0.85, 0.90, 0.78, 0.92]
+errors = [0.05, 0.03, 0.08, 0.02]
+# Create plot with error bars
+plt.figure(figsize=(8, 6))
+plt.errorbar(methods, accuracies, yerr=errors, fmt='o', capsize=5)
+plt.xlabel('Classification Methods')
+plt.ylabel('Accuracy')
+plt.title('Classification Accuracy with Error Bars')
+plt.grid(True)
+plt.show() 
+Konfidensinterval
+Konfidensintervaller er vigtige for at forstå usikkerheden i statistiske estimater:
+	• Et 95% konfidensinterval betyder at hvis eksperimentet blev gentaget mange gange, ville intervallet indeholde den sande parameter i 95% af tilfældene
+	• For normalfordelt data er 95% konfidensinterval: CI₉₅% = x̄ ± 1.96 σ/√n 
+		○ x̄ er middelværdien
+		○ σ er standardafvigelsen
+		○ n er antal observationer
+Konfidensintervaller kan også udledes for andre fordelinger og konfidensniveauer.
+Eksempler og opgaver
+Forelæsningen ender med to praktiske opgaver:
+Opgave 1:
+	• Genbesøg og færdiggør filtreringsøvelsen fra lektion 4
+	• Skab tydelige visualiseringer der viser signaler før og efter filtrering
+	• Brug Matplotlib line plots med tydelige farver og stilarter
+	• Husk akselabels og en forklarende legend
+Opgave 2:
+	• Genbesøg dit/dine datasæt fra Workshop 1
+	• Analyser og visualiser datakvalitet og distribution med pair plots og histogrammer
+	• Undersøg for outliers ved hjælp af box- eller violinplots
+	• Træn en classifier og visualisér klassifikationsrate med usikkerheder
+	• Brug Seaborn til pairplots/histogrammer og Matplotlib til error bars
+	• Visualisér usikkerheder som standardafvigelser eller 95% konfidensintervaller
+Supplerende noter:
+	1. Valg af visualisering: Det er vigtigt at vælge den rigtige type visualisering til dine data og det spørgsmål, du ønsker at besvare.
+	2. Æstetik og klarhed: God datavisualisering balancerer æstetik med klarhed - plottet skal være visuelt tiltalende men også let at fortolke.
+	3. Støjreduktion før visualisering: I nogle tilfælde kan det være gavnligt at anvende støjreduktionsmetoder før visualisering for at fremhæve væsentlige mønstre.
+	4. Interaktive visualiseringer: Biblioteker som Plotly giver mulighed for interaktive visualiseringer, hvilket kan være nyttigt for eksplorativ dataanalyse.
+	5. Farveblindhed: Vær opmærksom på at vælge farveskalaer, der er forståelige for farveblinde (f.eks. undgå rød-grøn kombinationer).
+
+Fra <https://claude.ai/chat/9d05f0af-e671-4db4-a6e6-c9ac22c02ca4> 
+
+
+Herunder er et sæt omfattende, detaljerede og letforståelige noter baseret på lektionen om data­visualisering. Noterne er struktureret, så du både kan få et overblik og gå i dybden med de enkelte emner – ideelt til både pensumforståelse og eksamensforberedelse.
+
+1. Introduktion til Data­Visualisering
+	• Definition:
+Data­visualisering handler om at lave grafiske præsentationer af data for at gøre det nemmere at forstå og fortolke informationen.
+	• Formål:
+		○ Udforskning af datasæt: Når man arbejder med nye datasæt uden forudgående domæneviden, hjælper visualisering med at finde mønstre, trends og outliers.
+		○ Data­kvalitetsvurdering: Ved at se på fordelingen og spredningen kan man identificere støj, outliers og mulige fejl i data.
+		○ Kommunikation af resultater: Grafiske præsentationer (fx i rapporter eller artikler) gør det lettere at formidle komplekse resultater end tal og tabeller alene.
+
+2. Centrale Visualiseringsværktøjer
+	• Biblioteker i Python: 
+		○ Matplotlib:
+Det mest grundlæggende bibliotek til plot – inspireret af MATLAB – der giver stor grad af tilpasning og integreres godt med NumPy og Pandas.
+		○ Seaborn:
+Bygger ovenpå Matplotlib og tilbyder mere avancerede og æstetiske plots med færre linjer kode.
+	• Andre værktøjer:
+Tidligere blev MATLAB anvendt, men i dag foretrækker mange Python-pakker på grund af deres fleksibilitet og store community.
+
+3. Grundlæggende Terminologi
+	• Figur (Figure):
+En container (svarende til et “vindue”), der kan indeholde ét eller flere plots.
+	• Subplots/Akser (Axes):
+De enkelte plotelementer inde i en figur, hvor data præsenteres grafisk.
+	• Labels, titler og legender:
+Vigtige for at forklare, hvad der bliver vist, så alle kan forstå sammenhængen i plottet.
+
+4. Gennemgang af Plottyper
+A. Scatter Plots (Punktdiagrammer)
+	• Formål:
+At visualisere forholdet mellem to variabler og se, om der er en trend (positiv, negativ eller ingen korrelation).
+	• Eksempel:
+Plot af én feature mod en anden – et tydeligt “sky af datapunkter” kan indikere graden af korrelation. Jo tættere punkterne ligger på en linje, desto stærkere er korrelationen.
+B. Histogrammer
+	• Formål:
+At vise frekvensfordelingen af data og give en idé om, hvordan data er spredt.
+	• Vigtige punkter:
+		○ Bins (interval):
+Antallet og bredden af de intervaller, data opdeles i. For få bins kan skjule detaljerne, mens for mange bins kan skabe for mange “små toppe” og gøre fordelingen svær at fortolke.
+		○ Sandsynlighedsfortolkning:
+Histogrammet kan normaliseres, så arealet under kurven bliver 100 % – hvilket kan sammenlignes med en sandsynlighedstæthedsfunktion.
+		○ Kernel Density Estimation (KDE):
+En metode, hvor man “lægger” en glat, ofte gaussisk, kernel på hvert datapunkt og summerer dem til en glat kurve (f.eks. den orange kurve). Denne metode kan tilpasses med parametre som bandwidth (H) og sigma.
+C. Boxplots
+	• Formål:
+At vise opsummerende statistikker og outliers i datasættet.
+	• Elementer i et boxplot:
+		○ Median:
+Den midterste værdi, når data sorteres.
+		○ Kvartiler (Q1 og Q3):
+Q1 er medianen af den nedre halvdel, og Q3 er medianen af den øverste halvdel af data.
+		○ Whiskers:
+Linjer, der strækker sig fra boksen (typisk baseret på IQR – interkvartilrækkevidden, dvs. Q3 minus Q1) og kan dække data inden for et bestemt interval.
+		○ Outliers:
+Punkter, der ligger uden for whiskers, som angiver ekstreme værdier.
+	• Bemærk:
+Forskellige programmeringssprog og biblioteker kan definere whiskers forskelligt, så det er vigtigt at tjekke dokumentationen.
+D. Violin Plots
+	• Kombination:
+En fusion af boxplot og KDE.
+	• Formål:
+Ud over at vise median og kvartiler (som i et boxplot) vises her også en glat kurve, der illustrerer datafordelingens form (f.eks. om den er normal, skæv eller multimodal).
+E. Linjediagrammer
+	• Anvendelse:
+Typisk brugt til at vise trends over tid eller andre kontinuerlige variable, og kan hjælpe med at identificere periodiciteter eller signalmønstre.
+F. Heatmaps
+	• Formål:
+At vise korrelationer mellem flere features – ofte via en matrix med farvegradienter.
+	• Vigtige pointer:
+		○ Colorbar:
+Skal være nøje indstillet, især hvis man sammenligner flere plots. Fx kan en farveskala fra –1 til 1 være ideel, når man visualiserer korrelationer.
+		○ Fortolkning:
+Høj korrelation vises typisk som en stærk farve på diagonalen, mens afvigende værdier uden for diagonalen kan indikere mindre eller negativ korrelation.
+
+5. Datafordelinger og Deres Visualisering
+	• Forskellige typer fordeling:
+		○ Normalfordeling:
+Symmetrisk, klokkeformet fordeling. Bruges ofte som en basisreference.
+		○ Skæv fordeling:
+Fordeling hvor data er skævt til den ene side – det kan medføre, at outliers kun ses på den ene side.
+		○ Uniform fordeling:
+Alle intervaller har omtrent samme frekvens.
+		○ Laplace-fordeling:
+Karakteriseret ved “spidse” toppe og ofte tilstedeværelsen af outliers (impulsive data).
+	• Effekten af antal bins:
+		○ Valg af for mange eller for få bins i et histogram påvirker, hvor godt histogrammet afspejler den underliggende fordeling.
+		○ En god tommelfingerregel er at vælge antallet af bins som en brøkdel af antallet af datapunkter (f.eks. 1/10 eller 1/20).
+
+6. Visualisering af Usikkerheder
+	• Hvorfor usikkerhed er vigtigt:
+Ved at plotte usikkerheder (fx standardafvigelser eller konfidensintervaller) kan man bedre vurdere, om forskelle mellem modeller (f.eks. klassifikationsrater) er signifikante.
+	• Metoder:
+		○ Standardafvigelse:
+Vises ofte som “fejlbarer” omkring en middelværdi.
+		○ Konfidensintervaller:
+Fx et 95 % konfidensinterval kan beregnes som:
+Middelværdi ± 1,96 × (standardafvigelse/√n)
+Dette interval angiver med 95 % sikkerhed, at den sande parameter (fx den sande middelværdi) ligger inden for intervallet.
+		○ Krydskontrol (k-fold cross-validation):
+Ved at gentage eksperimenter med forskellige opdelinger af data, kan man få et mål for, hvor stabil ens modelpræstation er, og dermed beregne usikkerhed.
+	• Anvendelse:
+Når man sammenligner to metoder, kan man vurdere om deres konfidensintervaller overlapper. Hvis de ikke overlapper, indikerer det en signifikant forskel i præstation.
+
+7. Praktiske Eksempler og Demonstrationer
+	• Scatter Plots med støj:
+		○ Eksempel på at plotte to features, hvor der tilføjes forskellige niveauer af støj (fx –10 dB, –20 dB, og ingen støj).
+		○ Formålet er at se, hvordan støj påvirker datasættets evne til at adskille klasser.
+	• Histogrammer og KDE:
+		○ Eksempler på hvordan histogrammer kan bruges til at estimere datafordeling.
+		○ Ved at tilføje KDE (f.eks. med gaussiske kernels) kan man opnå en glattere kurve, der estimerer den underliggende sandsynlighedstæthed.
+	• Boxplots og Violin Plots:
+		○ Boxplots viser median, kvartiler, whiskers og outliers.
+		○ Ved at kombinere med KDE (i form af violin plots) opnår man en dybere forståelse af, hvordan data fordeler sig, fx om fordelingen er symmetrisk, skæv eller bimodal.
+	• Heatmaps til Korrelationsanalyse:
+		○ Brug heatmaps til at visualisere, hvordan forskellige features korrelerer med hinanden.
+		○ Husk at tilpasse farveskalaen, så den dækker hele det relevante interval (typisk fra –1 til 1), for at sikre en konsistent fortolkning, især når man sammenligner flere datasæt.
+
+8. Opsummering af Vigtige Pointer
+	• Visualisering som Analyseværktøj: 
+		○ Hjælper med at opdage mønstre, trends, outliers og dataens generelle struktur.
+		○ Er et centralt redskab i eksplorativ dataanalyse, især når man arbejder med nye datasæt.
+	• Vigtigheden af Korrekt Visualisering: 
+		○ Valg af den rigtige plottype afhænger af dataens natur og det formål, man har med analysen.
+		○ Kombiner eventuelt flere plottyper for at få et mere nuanceret billede (fx boxplot + KDE i violin plots).
+	• Usikkerhed og Model Evaluering: 
+		○ Ved at inkludere usikkerhedsindikatorer som standardafvigelser og konfidensintervaller bliver det muligt at vurdere modellernes stabilitet og signifikans.
+		○ Krydskontrol er en effektiv metode til at estimere usikkerhed i modelpræstationen.
+	• Praktiske Overvejelser: 
+		○ Eksperimentér med antallet af bins i histogrammer, da det påvirker visualiseringen af fordelingen.
+		○ Vær opmærksom på, at forskellige biblioteker kan implementere visualiseringselementer (som whiskers i boxplots) forskelligt – tjek dokumentationen.
+
+Disse noter dækker de centrale emner, metoder og eksempler, som blev nævnt i lektionen. Ved at følge strukturen kan du nemt forklare din tilgang til data­visualisering, og de praktiske eksempler kan hjælpe dig med at demonstrere, hvordan man opnår dybere indsigt i et datasæt gennem visualisering. Hvis du har spørgsmål eller brug for yderligere forklaringer på specifikke dele, kan du altid gå i dybden med hvert enkelt afsnit.

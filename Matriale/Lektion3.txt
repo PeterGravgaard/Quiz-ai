@@ -1,0 +1,400 @@
+Komplet Overblik: Dataannotering og -imputering
+Kernekoncepter og Sammenhæng
+Dataannotering og dataimputering er to fundamentale processer inden for databehandling og maskinlæring, der adresserer forskellige udfordringer i datakvalitet:
+	1. Dataannotering fokuserer på at tilføje labels/mærker til rå data, så det bliver brugbart til supervised learning
+	2. Dataimputering håndterer problemet med manglende datapunkter ved at erstatte dem med estimerede værdier
+Begge processer er kritiske præprocesseringstrin, der forbedrer dataens kvalitet og anvendelighed til modeltrænning og analyse.
+Dataannotering: Proces og Værktøjer
+Grundprincip
+Dataannotering involverer systematisk labeling af data med korrekte svar eller kategorier. Dette er fundamentet for supervised learning, hvor modeller lærer af eksempler med kendte svar.
+Annoteringstyper og Eksempler
+	• Tekstannotering: Markering af entiteter (personer, steder), relationer og begivenheder i tekst
+	• Billedannotering: Bounding boxes rundt om objekter, segmentering af billedregioner, klassifikation af hele billeder
+	• Lydannotering: Markering af segmenter (tale, musik, støj), transskription af tale
+	• Tidsseriedata: Markering af hændelser, mønstre eller anomalier i tidsseriedata
+Værktøjer efter Datatype
+	1. NLP Værktøjer: 
+		○ brat: Web-baseret værktøj til avanceret tekstannotering
+		○ doccano: Open-source værktøj til sekvensmarkering og klassificering
+	2. Billedbehandling: 
+		○ CVAT: Omfattende værktøj til billede- og videoannotering
+		○ LabelImg: Specialiseret i bounding box annotering for objektdetektering
+	3. Audio: 
+		○ Audacity: Populær audio editor med annoteringsfunktionalitet
+		○ Sonic Visualiser: Avanceret værktøj til analyse og annotering af spektrogrammer
+Centrale Udfordringer
+	• Kvalitetssikring: Sikre konsistens og nøjagtighed i annotering
+	• Skalerbarhed: Effektivt annotere store datamængder
+	• Tvetydighed: Håndtere subjektive fortolkninger blandt annotatorer
+	• Ekspertise: Finde kvalificerede annotatorer med domæneviden
+	• Værktøjsbegrænsninger: Håndtere specialiserede annoteringsopgaver, der ikke understøttes af standardværktøjer
+Dataimputering: Håndtering af Manglende Værdier
+Årsager til Manglende Data
+	• Ufuldstændige besvarelser i surveys
+	• Tekniske fejl i dataindsamlingen
+	• Selektiv ikke-besvarelse (respondenter springer spørgsmål over)
+	• Strukturel datamangel (nogle data indsamles kun for bestemte grupper)
+	• Datakorrumpering eller -tab efter indsamling
+Kategorisering af Manglende Data
+	1. MCAR (Missing Completely At Random): 
+		○ Datamangel er helt urelateret til både observerede og uobserverede variable
+		○ Eksempel: Tilfældige tekniske fejl eller respondent glemmer at svare
+		○ Matematisk: P(B|X_obs, X_mis, ζ) = P(B|ζ)
+		○ Implikation: Simple imputeringsmetoder er ofte tilstrækkelige
+	2. MAR (Missing At Random): 
+		○ Datamangel relateret til observerede variable, men ikke til de manglende værdier selv
+		○ Eksempel: Yngre respondenter er mere tilbøjelige til at springe spørgsmål over
+		○ Matematisk: P(B|X_obs, X_mis, ζ) = P(B|X_obs, ζ)
+		○ Implikation: Kræver mere avancerede imputeringsmetoder der udnytter sammenhænge mellem variable
+	3. NMAR (Not Missing At Random): 
+		○ Datamangel direkte relateret til de manglende værdier selv
+		○ Eksempel: Personer med høj indkomst undlader at rapportere deres indkomst
+		○ Matematisk: P(B|X_obs, X_mis, ζ) afhænger af X_mis
+		○ Implikation: Kræver sofistikerede modelbaserede metoder og ofte eksplicitte antagelser
+Imputeringsmetoder og Deres Anvendelse
+Simple Metoder (mest egnet til MCAR)
+	• Mean/Median/Mode Imputering: Erstatning med gennemsnit, median eller hyppigste værdi
+	• LOCF/NOCB: Last/Next Observation Carried Forward/Backward for tidsseriedata
+Avancerede Metoder (egnet til MAR)
+	• Regressionsimputering: Prædiktion af manglende værdier baseret på andre variable
+	• KNN-imputering: Estimation baseret på værdier fra lignende observationer
+	• EM-algoritme: Statistisk metode til estimation af sandsynlighedsfordelinger
+	• Hot Deck Imputering: Erstatter manglende data med værdier fra lignende observationer
+Håndtering af NMAR
+	• Kræver modellering af selve mekanismen bag de manglende data
+	• Multiimputation med specifikke modelantagelser
+	• Domænespecifikke tilgange baseret på ekspertviden
+Sandsynlighedskoncepter i Dataimputering
+	• PDF (Probability Density Function): Beskriver den relative sandsynlighed for en værdi
+	• CDF (Cumulative Distribution Function): Sandsynligheden for at en variabel er mindre end en given værdi
+	• Sampling fra fordelinger: Teknikker til at generere syntetiske værdier baseret på estimerede fordelinger
+Praktisk Implementering
+Python-værktøjer
+	• scikit-learn: Omfattende bibliotek med imputeringsmetoder (SimpleImputer, KNNImputer, etc.)
+	• pandas: Indbyggede metoder til grundlæggende håndtering af manglende data
+	• fancyimpute: Specialiserede imputeringsalgoritmer
+Evalueringsstrategier
+	• Sammenligning af modellers præstation efter forskellige imputeringsmetoder
+	• Cross-validation med forskellige imputeringsstrategier
+	• Sensitivitetsanalyse for at vurdere robustheden af resultater
+Integrerede Anvendelser
+I en fuld data science workflow integreres disse teknikker:
+	1. Dataindsigt: Grundig analyse af datamangelmønstre før imputering
+	2. Iterativ forbedring: Brug af maskinlæring til at forbedre annoteringseffektivitet
+	3. Domænetilpasning: Valg af imputeringsmetoder baseret på specifik viden om data
+	4. Modelrobusthed: Vurdering af modellers følsomhed over for forskellige imputeringsstrategier
+Nøgleindsigter
+	1. Datakvalitet er afgørende: Kvaliteten af annotering og imputering har direkte indflydelse på modelydeevne
+	2. Der findes ikke én universal løsning: Valg af metode afhænger af datatype, mangelmønster og anvendelse
+	3. Domæneviden er værdifuld: Forståelse af data og deres indsamlingskontekst guider valg af teknikker
+	4. Balanceret tilgang er vigtig: For aggressive imputeringsmetoder kan introducere bias, mens for konservative tilgange kan spilde værdifuld data
+Disse databehandlingsteknikker er fundamentale for at bygge pålidelige maskinlærings- og statistiske modeller, og mestringen af dem er en kernekompetence for enhver datascientist.
+
+
+
+
+Noter til "Lektion 4: Dataannotering og -imputering" af Jesper Rindom Jensen
+Slide 1-2: Introduktion og Agenda
+Denne lektion handler om dataannotering og -imputering, som er centrale processer i databehandling og maskinlæring. Lektionen dækker følgende emner:
+	1. Dataannotering - processen med at labele/mærke data
+	2. Datamangel - problemer med manglende data
+	3. Håndtering af datamangel - metoder til at håndtere manglende data
+	4. Typer af datamangel - forskellige kategorier af manglende data
+	5. Avanceret dataimputering - teknikker til at erstatte manglende værdier
+	6. Opgaver - praktiske øvelser relateret til emnerne
+Slide 3: Dataannotering
+Dataannotering er processen med at tildele labels/mærker til data med korrekte svar. Dette er en fundamental proces i supervised learning:
+	• Definition: Labeling af data med korrekte svar
+	• Typisk proces: Brug af specialiserede værktøjer som hjælper brugeren med effektivt at generere labels
+	• Maskinlæring som hjælp: Hvis man allerede har en nogenlunde model, kan denne bruges som udgangspunkt for annoteringen (semi-supervised approach)
+Illustrationen på sliden viser et workflow med data, model, interface og ekspert, hvor eksperten korrigerer og forbedrer modellens prediktioner gennem et interface, hvilket skaber labels som bruges til at træne modellen igen.
+Slide 4: Eksempler på dataannotering
+Sliden viser tre forskellige eksempler på dataannotering:
+	1. Lydannotering: Et spektrogram der viser annotering af lydsegmenter med klasser som music, speech, car og noise
+	2. Billedannotering: Et gadebillede med bounding boxes rundt om objekter som mennesker og biler
+	3. Tekstannotering: Et dokument med farvekodede markeringer til at identificere forskellige entiteter som person, country, city, album, song, award, record label osv.
+Disse eksempler illustrerer forskellige typer af annoteringsopgaver inden for forskellige datadomæner.
+Slide 5-7: Annoteringsværktøjer
+Natural Language Processing (NLP) værktøjer:
+	• brat: Web-baseret værktøj til tekstannotering, som kan bruges til annotering af entiteter, relationer og begivenheder
+	• doccano: Open-source tekstannoteringsværktøj til labeling af sekvenser, klassificering osv.
+Billedbehandling værktøjer:
+	• CVAT: Open-source værktøj til annotering af billeder og video. Understøtter objektdetektering, klassificering og segmentering
+	• LabelImg: Grafisk annoteringsværktøj til at labele bounding boxes, populært til objektdetektering
+Audio værktøjer:
+	• Audacity: Audio editor der kan bruges til annotering, kan labele sektioner af audio og eksportere dem
+	• Sonic Visualiser: Værktøj til at analysere og annotere tidsseriedata (herunder spektrogrammer), anvendeligt til musik- og taleanalyse
+Illustrationerne viser eksempler på disse værktøjers brugergrænseflader
+Slide 8: Udfordringer ved dataannotering
+Dataannotering kommer med en række udfordringer:
+	1. Kvalitetssikring: Hvordan sikrer vi annoteringer af høj kvalitet?
+	2. Skalerbarhed: Hvordan annoterer vi store mængder af data effektivt?
+	3. Tvetydighed: Hvordan undgår vi subjektive forskelligheder i annoteringen?
+	4. Ekspertise: Hvordan rekrutterer vi kvalificerede eksperter til annoteringen?
+	5. Værktøjer: Hvad gør vi hvis eksisterende værktøjer ikke understøtter vores specifikke problem?
+Disse udfordringer understreger, at dataannotering er en kompleks proces, der kræver omhyggelig planlægning og udførelse.
+Slide 9: Manglende data
+Ud over støj i data er manglende datapunkter et almindeligt problem i dataanalyse:
+	• Definition af dataimputering: En proces hvor manglende eller ufuldstændig data erstattes med nye dataværdier
+	• Eksempel på manglende data: En værdi for en attribut der ikke var introduceret på opsamlingstidspunktet eller som blev mistet i dataindsamlingen
+Dataimputering er en præprocesseringsteknik der forsøger at håndtere problemet med manglende data.
+Slide 10-11: Eksempler på manglende data
+Typiske scenarier med manglende data:
+	• Udsendt survey til N respondenter, men kun M (< N) besvarer - mangler N-M samples
+	• M respondenter besvarer kun en survey delvist
+	• Nogle spørgsmål stilles kun til subset af respondenter, baseret på svar
+	• Nogle respondenter vælger ikke at svare enkelte, optionelle spørgsmål
+	• Data er blevet ændret/fjernet efter dataoprensning
+	• Indsamlet data vurderet ikke informativt og fjernet (fx besvarelser med 'ved ikke')
+	• Databasen er delvist korrumperet
+Illustrationen viser en matrix af data med missing values markeret med "?"
+Slide 12: Metoder til håndtering af datamangel
+Der er tre hovedkategorier af metoder til at håndtere manglende data:
+	1. Datafjernelse: Fjern samples med manglende attributdata
+	2. Sampling: Opbyg sandsynlighedsmodel for attribut, og udtræk tilfældig data som erstatning
+	3. Estimering: Udnyt afhængighed mellem attributter til at estimere manglende værdier
+Disse metoder repræsenterer forskellige tilgange til problemet, fra simpel eliminering til avanceret statistisk modellering.
+Slide 13: Fjerne mangelfulde data
+Simpel tilgang til håndtering af manglende data:
+	• Metode: Fjerne samples med manglende attributværdier
+	• Fordele: 
+		○ Simpel metode
+		○ Introducerer ikke eksternt bias
+	• Ulemper: 
+		○ Problematisk for små datasæt
+		○ Kan lede til samplemangel hvis en stor del af samples er mangelfulde
+Illustrationen viser en skraldespand med binær data, der illustrerer fjernelse af data
+Slide 14: Dataimputering - sampling
+Alternativ tilgang til at håndtere manglende data:
+	• Indsætte ny, syntetisk data hvor der mangler data
+	• Estimere en sandsynlighedsfordeling for en attribut, som kan bruges til sampling
+	• Antagelse: Attributten er uafhængig af andre attributter
+Illustrationen viser en sandsynlighedsfordeling der kan bruges til at sample nye værdier
+Slide 15: Sandsynlighedstæthed (PDF)
+	• Definition: Sandsynlighedstætheden er en funktion der beskriver en relativ sandsynlighed for en given sample
+	• Matematisk definition: En tilfældig variabel X har tætheden f_X, hvis sandsynligheden for at X ligger i intervallet [a,b] er givet ved integralet af f_X over dette interval
+Illustrationen viser forskellige sandsynlighedsfordelinger: normal, lognormal, logistisk og eksponentiel
+Slide 16: Kumulativ tæthedsfunktion (CDF)
+	• Definition: Sandsynligheden for at en tilfældig variabel er i intervallet (-∞, x)
+	• Matematisk definition: F_X(x) = ∫^x_{-∞} f_X(u) du
+Illustrationen viser sammenhængen mellem probability distribution function (PDF) og cumulative distribution function (CDF)
+Slide 17: Uniform fordeling
+	• PDF for kontinuært uniform distribuering: 
+		○ f(x) = 1/(b-a) for a ≤ x ≤ b
+		○ f(x) = 0 for x < a eller x > b
+	• CDF: 
+		○ F(x) = 0 for x < a
+		○ F(x) = (x-a)/(b-a) for a ≤ x ≤ b
+		○ F(x) = 1 for x > b
+Illustrationen viser en uniform fordeling med PDF som en rektangulær funktion
+Slide 18: Generering af samples
+Proces for at generere samples fra en ønsket fordeling:
+	• Ud fra en estimeret sandsynlighedsdistribution kan vi finde en kumulativ distributionsfunktion (CDF)
+	• Vi kan transformere en tilfældig sample fra en uniform distribution i intervallet 0 til 1
+	• Den samplede værdi r omdannes til en sample fra ønsket distribuering, y_t, ved hjælp af den inverse CDF
+Illustrationen viser transformation fra en tilfældig værdi r til en sample y_t ved hjælp af CDF
+Slide 19: Kategorisering af manglende data
+Der er tre hovedtyper af manglende data:
+	1. MCAR - Missing Completely At Random
+	2. MAR - Missing At Random
+	3. NMAR - Not Missing At Random
+Disse kategorier er afgørende for at vælge den mest passende imputeringsmetode.
+Slide 20: MCAR - Missing completely at random
+	• Definition: Datamanglen er komplet urelateret til både observeret og uobserveret data
+	• Årsag: Datamanglen er uafhængig af data
+	• Eksempel: En respondent har ved et uheld skippet et spørgsmål i en survey
+	• Implikation: 
+		○ Datamangel er tilfældig og relaterer sig ikke til andre variable
+		○ Simple imputationsmetoder som middel, median og mode erstatning kan være passende
+Matematisk notation: P(B|X_obs, X_mis, ζ) = P(B|ζ)
+Slide 21: MAR – Missing at random
+	• Definition: Datamangel er relateret til observations data, men ikke uobserveret data
+	• Årsag: Systematisk sammenhæng mellem tilbøjelighed til manglende data og observeret data, men ikke manglende data i sig selv
+	• Eksempel: Yngre respondenter i en survey er mere tilbøjelige til at skippe et spørgsmål. Datamangel relateret til alder (observeret), men ikke nødvendigvis svaret til spørgsmål (manglende data)
+	• Implikation: 
+		○ Nødvendigt med mere avanceret imputation
+		○ Fx regression på baggrund af andre observerede variable
+Matematisk notation: P(B|X_obs, X_mis, ζ) = P(B|X_obs, ζ)
+Slide 22: NMAR – Not missing at random
+	• Definition: Opstår når datamangel er relateret til ikke-observeret data
+	• Eksempel: Folk med højere indkomst er mindre tilbøjelige til at afsløre deres indkomst i en survey. Datamangel afhænger her af indkomstværdi
+	• Implikation: 
+		○ Mere udfordrende da manglende data mekanisme skal modelleres som en del af imputeringsprocessen
+		○ Kan løses med multipleimputation eller model-baserede metoder (baseret på antagelser om årsag til manglende data)
+Matematisk notation: P(B|X_obs, X_mis, ζ)
+Slide 23: Simple imputeringsmetoder
+Basale metoder til at erstatte manglende værdier:
+	• Mean imputering: Manglende værdier erstattes med middelværdi for specifik variabel/attribut
+	• Median imputering: Manglende værdier erstattes med medianværdi (robust over for outliers)
+	• Mode imputering: Manglende værdier erstattes med mode værdi (oftest forekommende værdi)
+	• Last/next Observation Carried Forward/backward (LOCF/NOCB): I tidsserier bruges forrige/fremtidige værdi
+Disse metoder er relativt simple at implementere, men kan have begrænsninger afhængigt af datatypen og årsagen til de manglende data.
+Slide 24: Eksempel: Mean imputering
+Sliden viser et praktisk eksempel på mean imputering:
+	• Venstre side: Original datasæt med "NaN" (Not a Number) værdier for Fitness_Score
+	• Højre side: Datasæt efter mean imputering, hvor alle NaN værdier er erstattet med gennemsnitsværdien 5.1
+Dette illustrerer, hvordan den simple mean imputering virker i praksis.
+Slide 25: Typiske imputeringsmetoder for MAR
+Mere avancerede metoder til at håndtere MAR data:
+	• Regressionsimputering: Manglende værdier prædikteres ud fra andre observerede variable (kan være lineær, logistisk eller andet)
+	• KNN imputering: Manglende værdier imputeres baseret på de K mest lignende tilfælde
+	• EM baseret imputering: Statistisk metode til estimering af sandsynlighedsdistribuering af data og manglende værdier
+	• Hot deck imputering: Manglende data erstattes med observeret data fra lignende cases ("decks"), kræver mål for similaritet
+Disse metoder tager højde for sammenhænge mellem variable, hvilket gør dem mere egnede til MAR-data.
+Slide 26: Regressionsimputering
+Sliden illustrerer forskellen mellem mean imputering og regressionsimputering:
+	• Mean imputering (venstre): Alle manglende værdier erstattes med samme gennemsnitsværdi, uanset sammenhænge med andre variable
+	• Regressionsimputering (højre): Manglende værdier prædikteres baseret på sammenhængen med andre variable, hvilket giver forskellige imputerede værdier afhængigt af konteksten
+Illustrationen viser, hvordan regressionsimputering bedre fanger sammenhængen mellem variable sammenlignet med mean imputering
+Slide 27: KNN imputering
+Sliden illustrerer K-Nearest Neighbors (KNN) imputering:
+	• Manglende værdier erstattes baseret på værdier fra de K nærmeste naboer i datasættet
+	• Afstanden mellem observationer måles i attributrummet
+	• Metoden kan være effektiv, når der er lokale mønstre i data
+Illustrationen viser en grøn cirkel (observation med manglende værdi) omgivet af blå firkanter og røde trekanter (potentielle naboer), med forskellige afstandscirkler
+Slide 28: Dataimputering i Python
+	• scikit-learn biblioteket har omfattende støtte til dataimputering
+	• Link til dokumentation: https://scikit-learn.org/stable/modules/impute.html
+Skærmbillede af scikit-learn dokumentation for imputationsmodulet vises
+Slide 29-30: Opgaver
+Opgave 1:
+	• Installer label studio ( https://labelstud.io/guide/install.html)
+	• Brug label studio til annotering af data fra semesterprojekter (fx NLP data eller tidsserie data)
+	• Se eksempler på annotering på https://labelstud.io/playground/
+Opgave 2:
+	• Brug datasættet fra https://www.kaggle.com/code/residentmario/simple-techniques-for-missing-data-imputation/input
+	• Udforsk datasættet og analyser hvilken type data der mangler (MAR, MCAR, NMAR)
+	• Anvend relevante imputeringsmetoder på manglende data
+	• Ekstra: Træn en klassificeringsmodel (fx KNN) med forskellige imputeringsmetoder og diskuter forskelle i resultater
+Disse opgaver giver praktisk erfaring med dataannotering og -imputering, som er centrale færdigheder i dataanalyse og maskinlæring.
+
+
+
+1. Kursusgang og Overordnet Formål
+	• Kontekst:
+		○ Dette var den tredje kursusgang i rækken og den sidste før den kommende workshop.
+		○ Formålet er at samle op på de centrale begreber, så I kan anvende dem på rigtige datasæt – både gennem praktiske opgaver og videre arbejde på workshoppen.
+	• To hovedemner:
+		1. Dataannotering: Hvordan man sætter labels på data for at kunne træne modeller.
+		2. Manglende Data & Imputering: Hvordan man håndterer og “udfylder” manglende datapunkter i et datasæt.
+
+2. Dataannotering
+2.1. Hvad er Dataannotering?
+	• Definition:
+Dataannotering (eller data notering) er processen med at tilføje labels eller "sande" svar til rådata, så modeller (typisk i en supervised learning-sammenhæng) kan trænes.
+	• Formål:
+At skabe et grundlag, hvor maskinlæringsmodeller kan lære at klassificere eller forudsige ved at kende den “korrekte” fortolkning af dataene.
+2.2. Eksempler på Dataannotering
+	• Lyddata:
+		○ Eksempel: En lydoptagelse fra en mikrofon ved vejkanten kan annoteres med tidsintervaller, der angiver, om der er tale, musik, trafikstøj eller naturlyde (f.eks. fuglekvidder).
+	• Billeddata:
+		○ Eksempel: Et billede fra et kamera kan få udpeget områder med objekter som biler, mennesker eller andre relevante objekter ved hjælp af f.eks. bounding boxes.
+	• Tekstdata:
+		○ Eksempel: I natural language processing (NLP) kan man markere navne, organisationer, steder eller andre nøgleelementer i en tekst.
+2.3. Værktøjer til Dataannotering
+	• Til Tekst:
+		○ Eksempler: Webbaserede værktøjer som f.eks. RAT, som gør det muligt at annotere entiteter og relationer.
+		○ Open source-alternativ: Locano.
+	• Til Billeder/Video:
+		○ Eksempler: CVAT og Label Image – værktøjer, der tillader grafisk annotering af billeder og videoer, inklusiv detektion, klassificering og segmentering.
+	• Til Lyd/Tidsserier:
+		○ Eksempler: Audacity (lydredigering med mulighed for at markere tidsintervaller) og Sonic Visualizer.
+2.4. Udfordringer ved Dataannotering
+	• Kvalitet:
+		○ Hvordan sikrer vi, at annoteringerne er af høj kvalitet?
+		○ Risikoen for subjektivitet: Forskellige personer kan fortolke et billede eller en lydoptagelse forskelligt.
+	• Skalering:
+		○ Ved store datasæt kan manuel annotering være for tidskrævende, hvilket kan føre til brug af “self-supervised” metoder, hvor man først annoterer en delmængde og derefter lader en model generere yderligere labels.
+
+3. Manglende Data og Imputering
+3.1. Hvad er Manglende Data?
+	• Definition:
+Manglende data opstår, når enkelte datapunkter i et datasæt ikke er tilgængelige – enten fordi de ikke er blevet indsamlet, er blevet fjernet under dataoprensning, eller fordi svar på visse spørgsmål i fx spørgeskemaer ikke er givet.
+	• Eksempel:
+		○ I et spørgeskema kan nogle respondenter udelade at besvare enkelte spørgsmål, hvilket efterlader “huller” i datasættet.
+3.2. Kategorisering af Manglende Data
+Der skelnes ofte mellem tre kategorier:
+	• MCAR (Missing Completely At Random):
+		○ Manglen er fuldstændig tilfældig og uafhængig af både observerede og uobserverede data.
+		○ Eksempel: En respondent ved en fejl undlader at besvare et spørgsmål.
+	• MAR (Missing At Random):
+		○ Manglen er relateret til de observerede data, men ikke direkte til den manglende værdi.
+		○ Eksempel: Yngre respondenter er mere tilbøjelige til at springe over bestemte spørgsmål.
+	• NMAR (Not Missing At Random):
+		○ Manglen er relateret til den uobserverede data selv.
+		○ Eksempel: Personer med høj indkomst undlader bevidst at oplyse deres indkomst.
+3.3. Strategier til Håndtering af Manglende Data
+	• Dropping (Fjernelse af Data):
+		○ Man kan fjerne rækker eller kolonner med for mange manglende værdier – men det kan føre til bias, især hvis manglen er systematisk.
+	• Imputering:
+Metoder til at “udfylde” de manglende datapunkter:
+		○ Simple Metoder:
+			§ Mean Imputation: Erstat manglende værdier med gennemsnittet af de observerede værdier.
+			§ Median Imputation: Bruger medianen, som er mere robust over for outliers.
+			§ Mode Imputation: Udskifter med den mest hyppige værdi – ofte mere beregningstungt, da det kræver en tæthedsestimering.
+		○ Sampling-baseret Imputering:
+			§ Anvendelse af sandsynlighedsfordelinger:
+				□ Udregn en sandsynlighedstæthedsfunktion (PDF) for en given attribut ud fra de observerede data.
+				□ Udled den kumulative fordelingsfunktion (CDF), som giver arealet under kurven fra minus uendelig op til et givet punkt.
+				□ Generér et tilfældigt tal fra en uniform fordeling (mellem 0 og 1) og brug den inverse CDF til at få en ny sample, der svarer til den observerede distribution.
+		○ Regressionsbaseret Imputering:
+			§ Udnyt relationen mellem variable (fx alder og indkomst) til at estimere manglende værdier med en regressionsmodel (lineær, logistisk eller non-parametrisk).
+		○ KNN (K-Nearest Neighbors) Imputering:
+			§ Find de datapunkter, der ligner den række med manglende data, og brug gennemsnittet af disse naboers værdier som erstatning.
+		○ Avancerede Metoder:
+			§ F.eks. hot deck imputation og metoder baseret på EM-framework, som kan håndtere flerdimensionelle sammenhænge mellem variabler.
+3.4. Teoretisk Fundament: PDF og CDF
+	• Sandsynlighedstæthedsfunktion (PDF):
+		○ En funktion, f(x), der beskriver den relative sandsynlighed for at en kontinuerlig variabel antager en bestemt værdi.
+		○ Eksempel: Fordelingen af højder i en population – der er typisk færre meget lave og meget høje, mens midterværdierne er hyppigere.
+	• Kumulativ Fordelingsfunktion (CDF):
+		○ F(x) = ∫₋∞ˣ f(t) dt, dvs. arealet under PDF-kurven fra minus uendelig op til x.
+		○ Bruges til at bestemme sandsynligheden for, at en variabel ligger under en bestemt værdi.
+	• Inverse Transform Sampling:
+		○ Ved at generere en tilfældig værdi u fra en uniform fordeling (0,1) og finde x sådan, at F(x) = u, kan vi få en sample, der følger den observerede fordeling.
+		○ Dette er særligt nyttigt til imputering, hvor man ønsker at erstatte manglende data med værdier, der afspejler den oprindelige fordeling.
+
+4. Praktiske Eksempler
+	• Spørgeskemadata:
+		○ Datasættet består af rækker, hvor hver række repræsenterer en besvarelse.
+		○ Eksempel: Nogle respondenter besvarer ikke alle spørgsmål (f.eks. alder eller indkomst mangler).
+		○ Mulige strategier:
+			§ Hvis kun enkelte datapunkter mangler, kan man anvende mean/median imputation.
+			§ Hvis manglen er systematisk (fx yngre respondenter springer over visse spørgsmål), kan man anvende regressionsimputering eller KNN, så man udnytter relationen mellem de observerede variable.
+
+5. Overvejelser og Trade-offs
+	• Bias:
+		○ Fjernelse af data (dropping) kan føre til bias, hvis de manglende værdier systematisk hører til en bestemt gruppe (fx aldersgrupper).
+	• Valg af Metode:
+		○ Valget af imputationsmetode afhænger af:
+			§ Datasættets størrelse
+			§ Omfanget af manglende data
+			§ Sammenhængen mellem variablerne
+			§ Risikoen for at introducere yderligere bias (fx ved at bruge simple metoder som middelværdien, hvis fordelingen er skæv)
+	• Robusthed:
+		○ Median er ofte at foretrække ved outliers.
+		○ Avancerede metoder (f.eks. regressionsbaseret imputering) kan udnytte sammenhænge mellem variabler, men kræver også en god forståelse af dataens natur.
+
+6. Opgaver og Yderligere Ressourcer
+	• Opgave 1 – Dataannotering:
+		○ Vælg et datasæt (lyd, billede eller tekst) og prøv at sætte labels på dataene ved hjælp af et af de nævnte værktøjer (f.eks. CVAT for billeder eller Audacity for lyd).
+	• Opgave 2 – Imputering af Manglende Data:
+		○ Arbejd med et datasæt (fx et spørgeskema) med manglende værdier.
+		○ Prøv først simple metoder (mean, median) og eksperimentér herefter med mere avancerede metoder (regressionsimputering, KNN-imputering).
+		○ Brug evt. Python-biblioteket Psychic Learn (link og vejledning findes på slide) til at implementere nogle af metoderne.
+	• Ekstra Hjælp:
+		○ Hvis du oplever udfordringer med at komme i gang med Python, så benyt dig af den hjælp, der er tilbudt (fx kontakt Simon).
+
+7. Spørgsmål og Diskussion
+	• Under forelæsningen blev der stillet spørgsmål:
+		○ Eksempel: Hvilken effekt har det på bias, hvis man fjerner rækker med manglende data?
+		○ Diskussion: Valget af imputationsstrategi skal afveje risikoen for at miste vigtige informationer mod den enkle implementering.
+	• Interaktivt Element:
+		○ Studerende opfordres til at stille spørgsmål undervejs, hvis der er emner, de ønsker uddybet.
+
+8. Afslutning og Pause
+	• Pause:
+		○ Forelæsningen blev afbrudt med en kort pause (omtrent kvart over) for at give tid til refleksion og spørgsmål.
+	• Næste Skridt:
+		○ Efter pausen fortsættes gennemgangen med fokus på de praktiske metoder til imputering af manglende data.
+		○ Husk, at opgaverne skal bruges aktivt i jeres semesterprojekter, så det er vigtigt at få praktisk erfaring med både annotering og imputering.

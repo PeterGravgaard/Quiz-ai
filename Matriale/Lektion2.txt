@@ -1,0 +1,554 @@
+Detaljeret Guide til SQL - Lektion 2
+Indledning og Baggrund
+SQL (Structured Query Language) er et standardiseret programmeringssprog designet specifikt til håndtering og manipulation af relationelle databaser. Udviklet første gang i 1970'erne hos IBM, har sproget gennemgået betydelige standardiseringsprocesser og er i dag et fundamentalt værktøj inden for datamanagement.
+Hvorfor Databaser?
+1. Parallelisering af Dataændringer
+Databaser muliggør, at flere brugere simultant kan arbejde med og ændre data uden risiko for konflikter. Dette sikres gennem avancerede låsemekanismer og transaktionsstyring.
+2. Dynamisk Datahåndtering
+	• Data er ikke statisk, men konstant foranderligt
+	• Databaser understøtter løbende opdateringer
+	• Effektiv håndtering af hyppige ændringer
+3. Effektiv Dataekstraktion
+	• Muliggør selektiv dataudvælgelse
+	• Hurtig adgang til specifikke datasæt
+	• Reducerer behandlingstid væsentligt
+4. Datadeling
+	• Centrale datadepoter
+	• Simultaneus adgang for mange brugere
+	• Kontrolleret dataadgang via rettigheder
+5. Ydelses-Optimering
+	• Indeksering
+	• Forespørgselsoptimering
+	• Hurtig databehandling
+6. Webintegration
+	• Understøtter dynamiske webapplikationer
+	• Muliggør realtidsdata
+	• Skalerbar arkitektur
+SQL Grundlæggende
+Definitioner
+	• Deklarativt programmeringssprog
+	• Høj abstraktionsniveau
+	• Maskinuafhængigt
+SQL Standarder
+	1. SQL-86 (Første standard)
+	2. SQL-92
+	3. SQL-99
+	4. SQL:2011
+Vigtige Funktionaliteter
+	1. Data Definition Language (DDL) 
+		○ Skabe databasestrukturer
+		○ Definere tabeller
+		○ Opsætte relationer
+	2. Data Manipulation Language (DML) 
+		○ Indsætte data
+		○ Opdatere data
+		○ Slette data
+		○ Fremsøge data
+Datatyper
+Atomic Datatyper
+	1. Numeriske 
+		○ INTEGER
+		○ FLOAT
+		○ DECIMAL
+		○ SMALLINT
+		○ BIGINT
+	2. Tekst 
+		○ CHAR
+		○ VARCHAR
+		○ TEXT
+	3. Dato/Tid 
+		○ DATE
+		○ DATETIME
+		○ TIMESTAMP
+	4. Special 
+		○ BOOLEAN
+		○ BLOB
+SQLite Specifike Datatyper
+	• INTEGER (Heltal)
+	• TEXT (Tekststreng)
+	• REAL (Decimaltal)
+	• BLOB (Binær data)
+Tabelstrukturer
+Centrale Komponenter
+	1. Relation/Tabel 
+		○ Struktureret datasæt
+		○ Defineret skema
+		○ Indeholder tupler
+	2. Attributter (Kolonner) 
+		○ Specifik datatype
+		○ Navngivet
+		○ Atomic karakter
+	3. Tuple/Rækker 
+		○ Enkelt datapost
+		○ Overholder tabelskema
+Nøglebegreber
+Primary Key
+	• Unik identifikator
+	• Ingen dubletter
+	• Kan ikke være NULL
+Foreign Key
+	• Reference mellem tabeller
+	• Sikrer referentiel integritet
+	• Muliggør relationelle forbindelser
+Constraints
+	• NOT NULL
+	• UNIQUE
+	• CHECK
+	• DEFAULT
+SQL Forespørgsler
+Grundlæggende Struktur
+
+sql
+Copy
+SELECT kolonner
+FROM tabel
+WHERE betingelse
+ORDER BY kolonne
+Avancerede Operationer
+	1. SELECT 
+		○ Vælger specifikke kolonner
+		○ Muliggør beregninger
+		○ Understøtter aggregeringsfunktioner
+	2. WHERE 
+		○ Filtrerer data
+		○ Understøtter komplekse betingelser
+		○ Logiske operatorer (AND, OR, NOT)
+	3. JOIN 
+		○ INNER JOIN
+		○ LEFT JOIN
+		○ RIGHT JOIN
+		○ FULL OUTER JOIN
+Praktiske Eksempler
+Oprettelse af Tabel
+
+sql
+Copy
+CREATE TABLE Studerende (
+    ID INTEGER PRIMARY KEY,
+    Navn TEXT NOT NULL,
+    Alder INTEGER,
+    Gennemsnit REAL
+);
+Indsættelse af Data
+
+sql
+Copy
+INSERT INTO Studerende 
+(Navn, Alder, Gennemsnit) 
+VALUES 
+('Anders Hansen', 22, 7.5);
+Avanceret Forespørgsel
+
+sql
+Copy
+SELECT Navn, Gennemsnit
+FROM Studerende
+WHERE Alder > 20
+ORDER BY Gennemsnit DESC;
+Yderligere Ressourcer
+	• W3Schools SQL Tutorial
+	• SQLite Documentation
+	• RealPython SQL Guide
+Konklusion
+SQL er et kraftfuldt værktøj til datamanagement, der kræver både teknisk forståelse og praktisk erfaring at mestre.
+
+
+Lektion 2: Introduktion til SQL
+Oversigt og Agenda
+Denne lektion fokuserer på en grundlæggende introduktion til SQL (Structured Query Language), et standardiseret sprog til datahåndtering og forespørgsler. Lektionen dækker følgende hovedemner:
+	• Introduktion til databaser
+	• Definition af SQL
+	• Grundlæggende begreber og definitioner
+	• Nøgler og begrænsninger
+	• SQL forespørgsler
+	• Clauses og Keywords
+	• Arbejde med multiple tabeller
+Hvorfor Databaser?
+Formål med databaser
+Databaser er centrale af følgende grunde:
+	1. Parallelisering: Flere brugere kan ændre data samtidigt
+	2. Dynamisk datahåndtering: Data ændrer sig løbende
+	3. Effektiv dataekstraktion: 
+		○ Mulighed for at udvælge specifikke observationer/variable
+		○ Hurtig adgang til store datasæt
+	4. Deling: 
+		○ Kan dele enorme datasæt mellem mange brugere
+	5. Ydelses-optimering: 
+		○ Hurtige dataforespørgsler uden omfattende analyse
+	6. Webintegration: 
+		○ Muliggør webinterfaces til dataadgang
+SQL Grundlæggende
+Definition af SQL
+	• SQL er et standardiseret sprog til forespørgsel og manipulation af data
+	• Karakteristika: 
+		○ Højniveau, deklarativt programmeringssprog
+		○ Optimeret til effektiv eksekvering og parallelisering
+SQL Standarder
+	• Første standardisering: 1986/87
+	• Vigtige versioner: 
+		○ ANSI SQL /SQL-86
+		○ SQL92 (SQL2)
+		○ SQL99 (SQL3)
+		○ SQL:2011
+	• Forskellige udbydere understøtter varierende dele af standarden 
+		○ Eksempel: SQLite implementerer det meste af SQL-92
+SQL Funktioner
+SQL er et alsidigt sprog med flere primære funktioner:
+	1. Data Definition Language (DDL): 
+		○ Definere relationelle skemaer
+		○ Oprette, ændre og fjerne tabeller og attributter
+	2. Data Manipulation Language (DML): 
+		○ Indsætte nye data
+		○ Fjerne data
+		○ Modificere eksisterende data
+		○ Forespørge data fra en eller flere tabeller
+Tabelstrukturer i SQL
+Grundlæggende Komponenter
+	1. Relation/Tabel: 
+		○ Et multiset (kan indeholde dubletter) af tupler
+		○ Hver tabel har et specifikt skema
+	2. Attributter (Kolonner): 
+		○ Dataindgang med specifik type (int, text, osv.)
+		○ Atomic datatyper: 
+			§ Characters: CHAR(20), VARCHAR(50)
+			§ Numbers: INT, BIGINT, SMALLINT, FLOAT
+			§ Andre: MONEY, DATETIME
+	3. Tuple/Række: 
+		○ Enkelt dataindgang i tabellen
+		○ Også kaldet 'record'
+Datatyper (specifikt for SQLite)
+	• Integer: Heltal
+	• Text: Tekststreng
+	• Real: Floating point
+	• Blob: Rå binær data
+Vigtige Begrebsafklaringer
+	• Hver attribut skal være af en atomic datatype
+	• En nøgle er et minimumssæt af attributter, der unikt identificerer et tuple
+	• NULL-værdier kan bruges, når en værdi er ukendt
+SQL Forespørgsler
+Grundlæggende Forespørgselsstruktur (SFW)
+
+sql
+Copy
+SELECT <attributes>
+FROM <one or more relations>
+WHERE <conditions>
+Centrale Operationer
+	1. Selection (Filtrering): 
+		○ Udvælge tupler baseret på betingelser
+		○ Eksempel: Vælg alle produkter i kategorien 'Gadgets'
+	2. Projektion: 
+		○ Producere en outputtabel med et subsæt af attributter
+		○ Eksempel: Vælg produktnavn, pris og producent
+Avancerede Forespørgselsmuligheder
+	• Distinct: Fjerne dubletter
+	• Count(): Tælle antal elementer
+	• Sortering: ORDER BY
+	• Begrænsning: LIMIT
+	• Operatorer: 
+		○ Sammenligning (=, !=, <, >)
+		○ Logiske operatorer (AND, OR, NOT)
+		○ Interval-check (BETWEEN)
+		○ Mønstergenkendelse (LIKE)
+Multiple Tabeller og Redundans
+Princip om Datareduktion
+	• Høj redundans kan medføre hukommelsespild
+	• Løsning: Opdele data i separate, relaterede tabeller
+	• Eksempel med musikalbum: 
+		○ Lav redundans: Separate tabeller for sange, album, artister
+Forbindelser mellem Tabeller
+	• Muliggør komplekse forespørgsler på tværs af tabeller
+	• JOIN-operationer forbinder relaterede data
+	• Reducerer dataredundans og forbedrer dataintegritet
+Praktiske Overvejelser
+SQL vs Python
+	• SQL kan bruges til både dataekstraktion og -manipulation
+	• Python kan bruges til videre databehandling efter ekstraktion
+	• Valg afhænger af kompleksitet og brugerens kompetencer
+Vigtige Detaljer og Best Practices
+	• SQL-kommandoer er ikke case-sensitive -Værdier er case-sensitive
+	• Brug enkelte anførselstegn til tekst-konstanter
+	• Vær opmærksom på nøgler, constraints og NULL-værdier
+Ressourcer til Videre Læring
+	• RealPython: Python SQL Libraries
+	• W3Schools SQL Tutorial
+	• SQLite Browser
+
+    Noter: Databaser og SQL
+1. Introduktion og Agenda
+	• Fortsættelse fra sidste gang:
+Forelæsningen bygger videre på, hvordan man strukturerer og tilgår data, og forbereder jer på håndtering af “manglende data” i større databaser.
+	• Dagens emner:
+		○ Databaser generelt: Hvad er en database, og hvornår er det en fordel at bruge en i stedet for f.eks. CSV-filer eller Excel-regneark?
+		○ Introduktion til SQL (Structured Query Language): Hvad er SQL, og hvordan bruges det til at oprette, manipulere og forespørge databaser?
+		○ Nøglebegreber og definitioner: Keys, constraints, datatyper og relationelle skemaer.
+		○ Eksempler på SQL-forespørgsler: Hvordan kan man udtrække, filtrere, sortere og transformere data med SQL?
+		○ Samarbejde mellem databaser: Hvordan kan man sammenkæde flere tabeller for at minimere redundant information?
+		○ Sammenligning med andre værktøjer: F.eks. forskelle mellem databaser og Excel, og hvornår et live system kræver en database.
+
+2. Hvorfor Bruge Databaser?
+	• Skalérbarhed og samtidighed:
+		○ Databaser tillader, at flere brugere kan tilgå og interagere med data samtidigt uden at blokere hinanden.
+	• Effektiv datahåndtering:
+		○ Ved store datasæt giver det mening at tilgå kun dele af data (f.eks. data for en bestemt periode) frem for at hente hele datasættet.
+	• Brugergrænseflade og sikkerhed:
+		○ Databaser tilbyder definerede måder at indsætte, opdatere og slette data på, hvilket kan beskytte mod utilsigtede fejl.
+	• Integration med andre systemer:
+		○ Databaser kan nemt integreres med webinterfaces og programmeringssprog (f.eks. Python) for automatiseret dataudtræk og -behandling.
+
+3. Hvad er SQL?
+	• Definition:
+		○ SQL står for Structured Query Language og er et standardiseret sprog til at interagere med relationelle databaser.
+	• Karakteristika:
+		○ Deklarativt sprog: Du specificerer hvad du vil have, og ikke nødvendigvis hvordan det skal gøres bag kulisserne.
+		○ Data definitionssprog (DDL): Bruges til at definere og ændre database-strukturen (f.eks. CREATE, ALTER, DROP).
+		○ Data manipulationssprog (DML): Bruges til at indsætte, opdatere, slette og forespørge data (f.eks. INSERT, UPDATE, DELETE, SELECT).
+	• Historie og udvikling:
+		○ De første SQL-standarder går tilbage til 1980’erne. Siden da er funktionaliteterne blevet udvidet, og der findes nu flere SQL-varianter (f.eks. SQLite, MySQL, PostgreSQL).
+
+4. Databaser, Tabeller og Datatyper
+	• Relationelle databaser:
+		○ Tabel: En samling af rækker og kolonner (svarende til et Excel-ark).
+		○ Række/Record/Tubel: Indeholder værdier for de definerede attributter.
+		○ Kolonne/Attribut: Har et navn og en bestemt datatype, fx tekst, tal, datoer.
+	• Vigtigheden af ensartet datatype:
+		○ Hele kolonnen skal have samme datatype for at sikre, at sammenligninger og søgninger fungerer korrekt (f.eks. sammenlignes tekst med tekst).
+	• Eksempel på datatyper i SQL:
+		○ Tekst: CHAR, VARCHAR (fast/længdebegrænset tekst).
+		○ Tal: INTEGER, SMALLINT, FLOAT (afhænger af præcision og størrelse).
+		○ Specifikke typer: Datoer, valuta mv.
+		○ Bemærk: I nogle SQL-varianter (fx SQLite) kan der være lidt forskellige navne eller begrænsninger for datatyper.
+
+5. Nøglebegreber: Keys og Constraints
+	• Primærnøgle (Primary Key):
+		○ Unikt id for hver række i en tabel (f.eks. et auto-incrementeret ID).
+		○ Sikrer, at ingen to rækker har samme værdi for nøglen.
+	• Andre nøgler:
+		○ Kan bestå af en kombination af attributter, hvis det samlet set giver en unik identifikation.
+	• Constraints (Begrænsninger):
+		○ NOT NULL: Sikrer, at en kolonne altid skal have en værdi.
+		○ UNIQUE: Sikrer, at alle værdier i kolonnen er unikke.
+		○ Formål: Øger datakvaliteten ved at forhindre fejl og inkonsistens (f.eks. at en studerende skal have et navn).
+
+6. Grundlæggende SQL-Syntaks: Oprettelse og Manipulation af Tabeller
+6.1. Oprettelse af Tabeller
+	• Eksempel: Opret en tabel users med en primærnøgle og andre attributter.
+
+sql
+Kopiér
+CREATE TABLE IF NOT EXISTS users (
+    ID INTEGER PRIMARY KEY AUTOINCREMENT,
+    username TEXT NOT NULL,
+    age INTEGER,
+    email TEXT
+);
+		○ Forklaring:
+			§ CREATE TABLE IF NOT EXISTS sikrer, at tabellen kun oprettes, hvis den ikke allerede findes.
+			§ ID er defineret som en primærnøgle med automatisk nummerering.
+			§ username er påkrævet (NOT NULL).
+6.2. Indsættelse af Data
+	• Eksempel: Indsæt data i users tabellen.
+
+sql
+Kopiér
+INSERT INTO users (username, age, email)
+VALUES ('Jonas', 25, 'jonas@example.com'),
+       ('Mia', 30, 'mia@example.com'),
+       ('Peter', 22, 'peter@example.com');
+		○ Forklaring: Flere records indsættes ad gangen med de angivne værdier for hver attribut.
+
+7. SQL Forespørgsler (SELECT-FROM-WHERE – SFW)
+7.1. Grundstruktur
+	• Syntaks:
+
+sql
+Kopiér
+SELECT [attributter]
+FROM [tabel]
+WHERE [betingelse];
+		○ SELECT: Angiver hvilke kolonner (eller * for alle) der skal hentes.
+		○ FROM: Specificerer den tabel, hvorfra data skal hentes.
+		○ WHERE: Indsætter betingelser for, hvilke rækker der skal returneres.
+7.2. Eksempler
+	• Hent alle kolonner for produkter med kategori 'gadgets':
+
+sql
+Kopiér
+SELECT *
+FROM product
+WHERE category = 'gadgets';
+		○ Forklaring: Her bruges en simpel filtrering baseret på kolonnen category.
+	• Projicering (udtræk af specifikke kolonner):
+
+sql
+Kopiér
+SELECT product_name, price, manufacturer
+FROM product
+WHERE category = 'gadgets';
+		○ Forklaring: Udtrækker kun de nødvendige kolonner, hvilket kan gøre outputtet mere overskueligt.
+7.3. Andre vigtige elementer i SELECT-forespørgsler
+	• DISTINCT: Fjerner dubletter i output.
+
+sql
+Kopiér
+SELECT DISTINCT category
+FROM product;
+	• Aggergeringsfunktioner: Fx COUNT for at tælle rækker.
+
+sql
+Kopiér
+SELECT COUNT(*)
+FROM product
+WHERE price >= 20;
+	• Sortering med ORDER BY:
+
+sql
+Kopiér
+SELECT *
+FROM product
+WHERE category = 'gism'
+  AND price > 50
+ORDER BY price ASC, product_name ASC;
+		○ Forklaring: Først sorteres der efter pris (stigende), og hvis priserne er ens, sorteres der efter produktnavn.
+	• Begrænsning med LIMIT:
+
+sql
+Kopiér
+SELECT *
+FROM product
+ORDER BY price DESC
+LIMIT 5;
+		○ Forklaring: Returnerer kun de 5 dyreste produkter.
+	• Brug af aritmetiske operationer:
+		○ Eksempel: Beregn pris med 8% moms:
+
+sql
+Kopiér
+SELECT product_name, price * 1.08 AS price_with_tax
+FROM product
+WHERE category = 'gadgets'
+  AND price >= 100;
+	• Mønstersøgning med LIKE:
+		○ Brug af % og _ for at matche variable tekstmønstre:
+
+sql
+Kopiér
+SELECT *
+FROM product
+WHERE product_name LIKE '%gimo%';
+		○ Forklaring: % repræsenterer en vilkårlig sekvens af tegn, mens _ repræsenterer ét enkelt tegn.
+	• CASE-udtryk til transformation af data:
+		○ Eksempel: Markér produkter som “expensive” (dyre) hvis prisen er over 200:
+
+sql
+Kopiér
+SELECT product_name,
+       price,
+       CASE
+           WHEN price > 200 THEN 'yes'
+           ELSE 'no'
+       END AS expensive
+FROM product;
+
+
+8. Arbejde med Flere Tabeller (Joins og Relations)
+	• Formålet med at splitte data:
+		○ Reducerer redundans ved at opdele information i separate tabeller (f.eks. en tabel for sange, en for album og en for artister).
+	• Eksempel – Musikdatabase:
+		○ Tabel: Albums
+			§ Kolonner: album_ID (primærnøgle), title, artist_ID.
+		○ Tabel: Artists
+			§ Kolonner: artist_ID (primærnøgle), artist_name.
+		○ Tabel: Tracks (Sange)
+			§ Kolonner: track_ID, album_ID, track_title, varighed.
+		○ Join-eksempel: Udtræk sangtitler sammen med albumtitel og artistnavn:
+
+sql
+Kopiér
+SELECT t.track_title, a.title AS album_title, r.artist_name
+FROM tracks t
+INNER JOIN albums a ON t.album_ID = a.album_ID
+INNER JOIN artists r ON a.artist_ID = r.artist_ID;
+		○ Forklaring:
+			§ Ved at bruge INNER JOIN kombineres data fra de tre tabeller ud fra de definerede fremmednøgler, så redundans minimeres og data hentes effektivt.
+
+9. Praktisk Opgave: Oprettelse af et “School” Databaseprojekt
+Opgavebeskrivelse
+	• Mål: Udvid et SQL-skript, så det opretter tre tabeller i en database kaldet school.db.
+	• Tabeller:
+		1. students
+			§ Kolonner: student_ID (primærnøgle), name (tekst), major (studieretning, tekst).
+		2. courses
+			§ Kolonner: course_ID (primærnøgle), course_name (tekst), instructor (tekst).
+		3. enrollments
+			§ Skal skabe relationer mellem studerende og kurser.
+			§ Kan fx indeholde: enrollment_ID (primærnøgle), student_ID (fremmednøgle), course_ID (fremmednøgle).
+	• Yderligere krav:
+		○ Indsæt mindst fem records (rækker) i både students og courses.
+		○ Lav nogle SQL-forespørgsler, der demonstrerer, hvordan man udtrækker data fra de forbundne tabeller (f.eks. hvilke studerende er tilmeldt hvilke kurser).
+Eksempel på SQL-skript (simpel version)
+
+sql
+Kopiér
+-- Opret students tabel
+CREATE TABLE IF NOT EXISTS students (
+    student_ID INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    major TEXT
+);
+-- Opret courses tabel
+CREATE TABLE IF NOT EXISTS courses (
+    course_ID INTEGER PRIMARY KEY AUTOINCREMENT,
+    course_name TEXT NOT NULL,
+    instructor TEXT
+);
+-- Opret enrollments tabel med fremmednøgler
+CREATE TABLE IF NOT EXISTS enrollments (
+    enrollment_ID INTEGER PRIMARY KEY AUTOINCREMENT,
+    student_ID INTEGER,
+    course_ID INTEGER,
+    FOREIGN KEY (student_ID) REFERENCES students(student_ID),
+    FOREIGN KEY (course_ID) REFERENCES courses(course_ID)
+);
+-- Eksempel på indsættelse af data i students
+INSERT INTO students (name, major)
+VALUES ('Alice', 'Kunstig Intelligens'),
+       ('Bob', 'Data Science'),
+       ('Clara', 'Softwareudvikling'),
+       ('David', 'Matematik'),
+       ('Eva', 'Bioinformatik');
+-- Eksempel på indsættelse af data i courses
+INSERT INTO courses (course_name, instructor)
+VALUES ('Introduktion til SQL', 'Professor Hansen'),
+       ('Avanceret Python', 'Professor Jensen'),
+       ('Maskinlæring 101', 'Professor Nielsen'),
+       ('Database Design', 'Professor Andersen'),
+       ('Statistik og Dataanalyse', 'Professor Sørensen');
+-- Eksempel på indsættelse i enrollments
+INSERT INTO enrollments (student_ID, course_ID)
+VALUES (1, 2),  -- Alice tilmeldt Avanceret Python
+       (2, 3),  -- Bob tilmeldt Maskinlæring 101
+       (3, 4),  -- Clara tilmeldt Database Design
+       (4, 5),  -- David tilmeldt Statistik og Dataanalyse
+       (5, 1);  -- Eva tilmeldt Introduktion til SQL
+	• Bemærk: Dette eksempel viser grundlæggende oprettelse af tabeller, indsættelse af data og brug af fremmednøgler for at forbinde tabellerne.
+
+10. SQL vs. Python til Datahåndtering
+	• SQL's fordele:
+		○ Effektiv filtrering, aggregering og sortering af data direkte i databasen.
+		○ Optimeret til store datasæt og parallel adgang.
+	• Python's fordele:
+		○ Mere fleksibilitet ved kompleks dataanalyse og efterbehandling.
+		○ Mange biblioteker (fx pandas) der kan arbejde med data efter udtræk fra SQL.
+	• Valg af værktøj:
+		○ Det afhænger af opgavens art og datamængdens størrelse. Nogle operationer kan være hurtigere og mere intuitive i SQL, mens andre kan gøres i Python efter udtræk.
+
+11. Afsluttende Bemærkninger og Vigtige Pointer
+	• Konsistens og datatyper:
+		○ Det er vigtigt, at samme datatype anvendes i en hel kolonne for at sikre korrekt sammenligning og dataudtræk.
+	• SQL er ikke casesensitiv for nøgleord:
+		○ For eksempel vil SELECT, select og SeLeCt fungere ens – dog er værdierne i data (tekststrenge) case-sensitive.
+	• Praktisk værktøj – DB Browser:
+		○ Brug DB Browser for SQLite eller et lignende værktøj til at inspicere og verificere dine databaser, når du arbejder med SQL-forespørgsler.
+	• Forskellige SQL-dialekter:
+		○ Vær opmærksom på, at nogle funktioner (som f.eks. LIMIT og OFFSET) kan variere mellem forskellige SQL-standarder. I denne forelæsning refereres der ofte til SQLite.

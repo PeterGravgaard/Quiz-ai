@@ -247,6 +247,9 @@ QPushButton#next_btn:hover {
           <height>40</height>
          </size>
         </property>
+        <property name="visible">
+         <bool>false</bool>
+        </property>
        </widget>
       </item>
       <item>
@@ -260,7 +263,7 @@ QPushButton#next_btn:hover {
           <height>40</height>
          </size>
         </property>
-        <property name="visible">
+        <property name="enabled">
          <bool>false</bool>
         </property>
        </widget>
